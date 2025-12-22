@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mental Health Support Chatbox</title>
+
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+    }
+
+    body{
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:linear-gradient(135deg,#e6f7ff 0%,#e8fbe8 100%);
+      color:#111;
+    }
+
+    .shell{
+      width:94%;
+      max-width:1150px;
+      background:rgba(255,255,255,0.92);
+      border-radius:26px;
+      padding:40px 42px;
+      display:grid;
+      grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);
+      gap:32px;
+      box-shadow:0 20px 50px rgba(15,23,42,0.08);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .badge{
+      font-size:0.75rem;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      color:#64748b;
+      margin-bottom:18px;
+      font-weight:600;
+    }
+
+    h1{
+      font-size:2.6rem;
+      line-height:1.1;
+      margin-bottom:18px;
+      color:#0f172a;
+    }
+
+    .sub{
+      font-size:0.97rem;
+      color:#475569;
+      max-width:320px;
+      margin-bottom:30px;
+    }
+
+    .btn-row{
+      display:flex;
+      gap:16px;
+      margin-bottom:26px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:none;
+      border-radius:999px;
+      padding:12px 26px;
+      font-size:0.95rem;
+      font-weight:600;
+      cursor:pointer;
+      transition:transform .18s ease, box-shadow .18s ease, background .18s ease,color .18s ease;
+    }
+    .btn-primary{
+      background:#38bdf8;
+      color:#0b1120;
+      box-shadow:0 10px 22px rgba(56,189,248,0.5);
+    }
+    .btn-primary:hover{
+      transform:translateY(-2px);
+      box-shadow:0 14px 30px rgba(56,189,248,0.6);
+    }
+    .btn-ghost{
+      background:#e2f3ff;
+      color:#0f172a;
+    }
+    .btn-ghost:hover{
+      background:#d3e8ff;
+      transform:translateY(-2px);
+    }
+
+    .note{
+      font-size:0.78rem;
+      color:#64748b;
+      max-width:280px;
+      line-height:1.4;
+      margin-top:18px;
+    }
+
+    .peek{
+      margin-top:22px;
+      padding:12px 14px;
+      border-radius:14px;
+      background:#e0f2fe;
+      font-size:0.8rem;
+      color:#0f172a;
+      max-width:330px;
+      display:flex;
+      gap:8px;
+      align-items:flex-start;
+    }
+    .peek-dot{
+      width:8px;height:8px;border-radius:999px;background:#22c55e;margin-top:4px;
+      box-shadow:0 0 0 4px rgba(34,197,94,0.25);
+    }
+
+    /* Right side animated cat scene */
+    .right{
+      position:relative;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .cat-scene{
+      width:100%;
+      max-width:440px;
+      height:340px;
+      border-radius:22px;
+      background:linear-gradient(180deg,#bfdbfe 0%,#e5f9f0 55%,#fef9c3 100%);
+      box-shadow:0 18px 40px rgba(15,23,42,0.25);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .cat-scene::after{
+      content:"";
+      position:absolute;
+      left:-20%;
+      right:-20%;
+      bottom:-40px;
+      height:120px;
+      background:radial-gradient(circle at top,#e0f2fe 0,#fef3c7 55%,#fef9c3 100%);
+    }
+
+    .cat-body{
+      position:absolute;
+      left:50%;
+      bottom:50px;
+      transform:translateX(-50%);
+      width:150px;
+      height:80px;
+      background:#fce4ec;
+      border-radius:70px 70px 50px 50px;
+      box-shadow:0 8px 18px rgba(15,23,42,0.15);
+      animation:breath 3s ease-in-out infinite;
+      cursor:pointer;
+    }
+    .cat-body.jump{
+      animation:jump 0.5s ease-out;
+    }
+
+    .cat-head{
+      position:absolute;
+      top:-55px;
+      left:26px;
+      width:70px;
+      height:60px;
+      background:#fce4ec;
+      border-radius:32px;
+      box-shadow:0 6px 12px rgba(15,23,42,0.15);
+    }
+
+    .cat-ear{
+      position:absolute;
+      width:20px;
+      height:22px;
+      background:#fce4ec;
+      top:-14px;
+      border-radius:6px 6px 0 0;
+    }
+    .ear-left{left:6px;}
+    .ear-right{right:6px;}
+
+    .cat-eye{
+      position:absolute;
+      width:8px;
+      height:8px;
+      background:#0f172a;
+      border-radius:50%;
+      top:20px;
+    }
+    .eye-left{left:18px;}
+    .eye-right{right:18px;}
+
+    .cat-nose{
+      position:absolute;
+      width:8px;
+      height:6px;
+      background:#f97373;
+      border-radius:50%;
+      top:30px;
+      left:50%;
+      transform:translateX(-50%);
+    }
+
+    .cat-whisker{
+      position:absolute;
+      width:26px;
+      height:2px;
+      background:#0f172a;
+      top:32px;
+    }
+    .w-left{left:6px;}
+    .w-right{right:6px;}
+
+    .cat-paw{
+      position:absolute;
+      width:26px;
+      height:18px;
+      background:#fce4ec;
+      bottom:-6px;
+      border-radius:20px;
+      box-shadow:0 4px 8px rgba(15,23,42,0.18);
+    }
+    .paw-left{left:26px;}
+    .paw-right{right:26px;}
+
+    .cat-tail{
+      position:absolute;
+      right:-30px;
+      bottom:20px;
+      width:70px;
+      height:18px;
+      background:#fce4ec;
+      border-radius:20px;
+      transform-origin:left center;
+      animation:tail 2.4s ease-in-out infinite;
+    }
+
+    .mini-cats{
+      position:absolute;
+      bottom:6px;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      gap:12px;
+    }
+
+    .mini{
+      width:22px;
+      height:22px;
+      border-radius:50%;
+      background:#f9a8d4;
+      position:relative;
+      animation:miniJump 2s ease-in-out infinite;
+    }
+    .mini::before{
+      content:"";
+      position:absolute;
+      inset:6px;
+      border-radius:50%;
+      background:#fff;
+    }
+
+    .mini-1{background:#f9a8d4;animation-delay:0s;}
+    .mini-2{background:#a5f3fc;animation-delay:.15s;}
+    .mini-3{background:#bbf7d0;animation-delay:.3s;}
+    .mini-4{background:#fde68a;animation-delay:.45s;}
+    .mini-5{background:#e9d5ff;animation-delay:.6s;}
+    .mini-6{background:#fecaca;animation-delay:.75s;}
+
+    @keyframes breath{
+      0%,100%{transform:translateX(-50%) scaleY(1);}
+      50%{transform:translateX(-50%) scaleY(1.03);}
+    }
+
+    @keyframes tail{
+      0%,100%{transform:rotate(10deg);}
+      50%{transform:rotate(-12deg);}
+    }
+
+    @keyframes miniJump{
+      0%,100%{transform:translateY(0);}
+      50%{transform:translateY(-6px);}
+    }
+
+    @keyframes jump{
+      0%{transform:translateX(-50%) translateY(0);}
+      40%{transform:translateX(-50%) translateY(-40px);}
+      100%{transform:translateX(-50%) translateY(0);}
+    }
+
+    /* Chat modal */
+    .chat-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,0.35);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:50;
+    }
+    .chat-backdrop.show{display:flex;}
+
+    .chat-window{
+      width:100%;
+      max-width:480px;
+      background:#f9fafb;
+      border-radius:20px;
+      box-shadow:0 20px 45px rgba(15,23,42,0.35);
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
+
+    .chat-header{
+      padding:14px 18px;
+      background:#38bdf8;
+      color:#0b1120;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .chat-header span{
+      font-weight:700;
+      font-size:0.95rem;
+    }
+    .chat-close{
+      border:none;
+      background:rgba(15,23,42,0.1);
+      color:#0b1120;
+      border-radius:999px;
+      width:26px;
+      height:26px;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+    .chat-body{
+      padding:14px 14px 6px;
+      max-height:360px;
+      overflow-y:auto;
+      background:#eef2ff;
+    }
+
+    .msg{
+      max-width:80%;
+      margin-bottom:10px;
+      padding:9px 12px;
+      border-radius:14px;
+      font-size:0.87rem;
+      line-height:1.3;
+    }
+    .msg.user{
+      margin-left:auto;
+      background:#38bdf8;
+      color:#0b1120;
+      border-bottom-right-radius:4px;
+    }
+    .msg.bot{
+      margin-right:auto;
+      background:#ffffff;
+      color:#111827;
+      border-bottom-left-radius:4px;
+    }
+
+    .chat-footer{
+      padding:10px;
+      background:#f9fafb;
+      display:flex;
+      gap:8px;
+      border-top:1px solid #e5e7eb;
+    }
+    .chat-input{
+      flex:1;
+      border-radius:999px;
+      border:1px solid #cbd5e1;
+      padding:8px 14px;
+      font-size:0.9rem;
+      outline:none;
+    }
+    .chat-input:focus{
+      border-color:#38bdf8;
+      box-shadow:0 0 0 1px rgba(56,189,248,0.4);
+    }
+    .chat-send{
+      border:none;
+      border-radius:999px;
+      background:#0f172a;
+      color:#f9fafb;
+      padding:8px 16px;
+      font-size:0.88rem;
+      font-weight:600;
+      cursor:pointer;
+    }
+    .chat-send:disabled{
+      opacity:0.5;
+      cursor:not-allowed;
+    }
+
+    .history-note{
+      font-size:0.8rem;
+      color:#6b7280;
+      margin-top:6px;
+    }
+
+    @media(max-width:840px){
+      .shell{
+        grid-template-columns:1fr;
+        padding:26px 22px 34px;
+      }
+      .right{order:-1;margin-bottom:12px;}
+      h1{font-size:2.1rem;}
+      .cat-scene{height:300px;}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="shell">
+    <!-- Left side -->
+    <section>
+      <div class="badge">Your safe space</div>
+      <h1>Mental Health<br>Support Chatbox</h1>
+      <p class="sub">
+        Talk to an AI listener that stays gentle, non‑judgmental, and always available when you need to let things out.
+      </p>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="startChatBtn">Start Chat</button>
+        <button class="btn btn-ghost" id="previousChatsBtn">Previous Chats</button>
+      </div>
+
+      <div class="peek">
+        <div class="peek-dot"></div>
+        <p>
+          “Hi, I’m here for you. Tell me what’s on your mind today, and we’ll untangle it together one small step at a time.”
+        </p>
+      </div>
+
+      <p class="note">
+        This space is not a replacement for professional help.  
+        If you are in crisis, please reach out to a trusted person or emergency helpline in your area.
+      </p>
+    </section>
+
+    <!-- Right side animated cat -->
+    <section class="right">
+      <div class="cat-scene">
+        <div class="cat-body" id="bigCat">
+          <div class="cat-head">
+            <div class="cat-ear ear-left"></div>
+            <div class="cat-ear ear-right"></div>
+            <div class="cat-eye eye-left"></div>
+            <div class="cat-eye eye-right"></div>
+            <div class="cat-nose"></div>
+            <div class="cat-whisker w-left"></div>
+            <div class="cat-whisker w-right"></div>
+          </div>
+          <div class="cat-paw paw-left"></div>
+          <div class="cat-paw paw-right"></div>
+          <div class="cat-tail"></div>
+        </div>
+
+        <div class="mini-cats">
+          <div class="mini mini-1"></div>
+          <div class="mini mini-2"></div>
+          <div class="mini mini-3"></div>
+          <div class="mini mini-4"></div>
+          <div class="mini mini-5"></div>
+          <div class="mini mini-6"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Chat popup -->
+  <div class="chat-backdrop" id="chatBackdrop">
+    <div class="chat-window">
+      <div class="chat-header">
+        <span>G&amp;G Support Catbot</span>
+        <button class="chat-close" id="chatCloseBtn">&times;</button>
+      </div>
+      <div class="chat-body" id="chatBody">
+        <!-- messages injected here -->
+      </div>
+      <div class="chat-footer">
+        <input id="chatInput" class="chat-input" placeholder="Type how you're feeling..." />
+        <button id="chatSend" class="chat-send">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Big cat jump on click
+    const bigCat = document.getElementById('bigCat');
+    bigCat.addEventListener('click', () => {
+      bigCat.classList.remove('jump');
+      void bigCat.offsetWidth;
+      bigCat.classList.add('jump');
+    });
+
+    // Chat logic
+    const startBtn = document.getElementById('startChatBtn');
+    const prevBtn  = document.getElementById('previousChatsBtn');
+    const backdrop = document.getElementById('chatBackdrop');
+    const closeBtn = document.getElementById('chatCloseBtn');
+    const chatBody = document.getElementById('chatBody');
+    const chatInput = document.getElementById('chatInput');
+    const chatSend = document.getElementById('chatSend');
+
+    const STORAGE_KEY = 'gg_catbot_history_v1';
+
+    function openChat() {
+      backdrop.classList.add('show');
+      chatInput.focus();
+    }
+
+    function closeChat() {
+      backdrop.classList.remove('show');
+    }
+
+    function scrollToBottom() {
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function addMessage(text, from) {
+      const div = document.createElement('div');
+      div.className = 'msg ' + (from === 'user' ? 'user' : 'bot');
+      div.textContent = text;
+      chatBody.appendChild(div);
+      scrollToBottom();
+    }
+
+    function saveHistory() {
+      const msgs = Array.from(chatBody.querySelectorAll('.msg')).map(m => ({
+        text: m.textContent,
+        from: m.classList.contains('user') ? 'user' : 'bot'
+      }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(msgs));
+    }
+
+    function loadHistory() {
+      chatBody.innerHTML = '';
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        addMessage("No previous chats yet. When you have a conversation, it will appear here.", "bot");
+        return;
+      }
+      try {
+        const msgs = JSON.parse(raw);
+        msgs.forEach(m => addMessage(m.text, m.from));
+        addMessage("You are viewing your last saved conversation.", "bot");
+      } catch(e) {
+        addMessage("Could not load previous chats.", "bot");
+      }
+    }
+
+    function fakeAiReply(userText) {
+      // yahan baad me Gemini API call aa jayega
+      const templates = [
+        "Thank you for sharing that. It sounds like this has been heavy on your mind.",
+        "Totally valid to feel this way. What do you think would make today feel 1% lighter?",
+        "You’re not alone in feeling like this. When did you first notice these feelings?",
+        "That does sound tough. What is one small comforting thing you can do for yourself after this chat?"
+      ];
+      const pick = templates[Math.floor(Math.random() * templates.length)];
+      setTimeout(() => {
+        addMessage(pick, "bot");
+        saveHistory();
+      }, 900);
+    }
+
+    function handleSend() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+      addMessage(text, "user");
+      chatInput.value = '';
+      saveHistory();
+      fakeAiReply(text);
+    }
+
+    // Event wiring
+    startBtn.addEventListener('click', () => {
+      chatBody.innerHTML = '';
+      addMessage("Hi, I’m your gentle catbot. What’s on your mind right now?", "bot");
+      openChat();
+    });
+
+    prevBtn.addEventListener('click', () => {
+      loadHistory();
+      openChat();
+    });
+
+    closeBtn.addEventListener('click', closeChat);
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) closeChat();
+    });
+
+    chatSend.addEventListener('click', handleSend);
+    chatInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleSend();
+    });
+  </script>
+</body>
+</html>
