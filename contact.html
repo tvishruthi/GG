@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact - Grateful & Grounded</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #e6f7ff 0%, #e8fbe8 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1100px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 24px;
+        padding: 52px 56px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.06);
+        position: relative;
+      }
+
+      .content-left {
+        flex: 1;
+        padding-right: 40px;
+      }
+
+      h1 {
+        font-size: 2.7rem;
+        font-weight: 800;
+        line-height: 1.15;
+        margin-bottom: 40px;
+        color: #111;
+      }
+
+      .underline {
+        background: linear-gradient(90deg, #b3e5fc, #c8e6c9);
+        border-radius: 8px;
+        padding: 0 4px;
+      }
+
+      .contact-info {
+        display: flex;
+        gap: 52px;
+        margin-bottom: 32px;
+      }
+
+      .info-box h4 {
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #555;
+        margin-bottom: 6px;
+        font-weight: 600;
+      }
+
+      .info-box p {
+        font-size: 0.98rem;
+        color: #111;
+        font-weight: 500;
+      }
+
+      .hotline {
+        font-size: 0.9rem;
+        color: #444;
+        max-width: 340px;
+        line-height: 1.5;
+      }
+
+      .hotline strong {
+        display: block;
+        font-size: 1.6rem;
+        color: #111;
+        margin-top: 4px;
+      }
+
+      .image-right {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+      }
+
+      .main-pic {
+        width: 100%;
+        max-width: 430px;
+        border-radius: 24px;
+        object-fit: cover;
+        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.08);
+      }
+
+      /* CUTE CATS (pure CSS) */
+      .cats-wrap {
+        position: absolute;
+        bottom: -12px;
+        right: 10px;
+        display: flex;
+        gap: 10px;
+      }
+
+      .cat {
+        width: 70px;
+        height: 70px;
+        background: #fff;
+        border-radius: 20px;
+        position: relative;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+      }
+
+      .cat-body {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 46px;
+        height: 32px;
+        background: #fce4ec;
+        border-radius: 24px 24px 18px 18px;
+      }
+
+      .cat-head {
+        position: absolute;
+        bottom: 22px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 32px;
+        height: 28px;
+        background: #fce4ec;
+        border-radius: 18px;
+      }
+
+      .cat-ear {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: #fce4ec;
+        top: -4px;
+        border-radius: 4px 4px 0 0;
+      }
+
+      .cat-ear.left {
+        left: 3px;
+      }
+
+      .cat-ear.right {
+        right: 3px;
+      }
+
+      .cat-eye {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: #000;
+        border-radius: 50%;
+        top: 9px;
+      }
+
+      .cat-eye.left {
+        left: 9px;
+      }
+
+      .cat-eye.right {
+        right: 9px;
+      }
+
+      .cat-nose {
+        position: absolute;
+        width: 4px;
+        height: 3px;
+        background: #f06292;
+        border-radius: 50%;
+        top: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .cat-tail {
+        position: absolute;
+        width: 30px;
+        height: 8px;
+        background: #fce4ec;
+        right: -6px;
+        bottom: 10px;
+        border-radius: 10px;
+      }
+
+      .cat.green .cat-body,
+      .cat.green .cat-head,
+      .cat.green .cat-ear,
+      .cat.green .cat-tail {
+        background: #c8e6c9;
+      }
+
+      .cat.blue .cat-body,
+      .cat.blue .cat-head,
+      .cat.blue .cat-ear,
+      .cat.blue .cat-tail {
+        background: #bbdefb;
+      }
+
+      .back-btn {
+        position: absolute;
+        top: 22px;
+        left: 24px;
+        text-decoration: none;
+        background: #b2dfdb;
+        color: #111;
+        width: 40px;
+        height: 40px;
+        border-radius: 999px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.2rem;
+        transition: 0.25s;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+      }
+
+      .back-btn:hover {
+        background: #81d4fa;
+        transform: translateY(-2px);
+      }
+
+      @media(max-width:768px) {
+        .container {
+          flex-direction: column-reverse;
+          padding: 30px 22px 34px;
+          text-align: center;
+        }
+
+        .content-left {
+          padding-right: 0;
+          margin-top: 28px;
+        }
+
+        .contact-info {
+          flex-direction: column;
+          gap: 18px;
+          align-items: center;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        .back-btn {
+          top: 16px;
+          left: 16px;
+        }
+
+        .cats-wrap {
+          bottom: -20px;
+          right: 0;
+          gap: 6px;
+        }
+
+        .cat {
+          width: 60px;
+          height: 60px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a href="index.html" class="back-btn">&larr;</a>
+    <div class="container">
+      <div class="content-left">
+        <h1> We are here to help <br> you become the <br>
+          <span class="underline">grateful, grounded</span>
+          <br> version you are meant to be
+        </h1>
+        <div class="contact-info">
+          <div class="info-box">
+            <h4>Email</h4>
+            <p>greatfulgrounded@gg.com</p>
+          </div>
+          <div class="info-box">
+            <h4>Phone</h4>
+            <p>123-456-7890</p>
+          </div>
+        </div>
+        <div class="hotline"> For immediate assistance, please call the national suicide hotline at <strong>988</strong>
+        </div>
+      </div>
+      <div class="image-right">
+        <div class="cats-wrap">
+          <div class="cat">
+            <div class="cat-body"></div>
+            <div class="cat-head">
+              <div class="cat-ear left"></div>
+              <div class="cat-ear right"></div>
+              <div class="cat-eye left"></div>
+              <div class="cat-eye right"></div>
+              <div class="cat-nose"></div>
+            </div>
+            <div class="cat-tail"></div>
+          </div>
+          <div class="cat green">
+            <div class="cat-body"></div>
+            <div class="cat-head">
+              <div class="cat-ear left"></div>
+              <div class="cat-ear right"></div>
+              <div class="cat-eye left"></div>
+              <div class="cat-eye right"></div>
+              <div class="cat-nose"></div>
+            </div>
+            <div class="cat-tail"></div>
+          </div>
+          <div class="cat blue">
+            <div class="cat-body"></div>
+            <div class="cat-head">
+              <div class="cat-ear left"></div>
+              <div class="cat-ear right"></div>
+              <div class="cat-eye left"></div>
+              <div class="cat-eye right"></div>
+              <div class="cat-nose"></div>
+            </div>
+            <div class="cat-tail"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
