@@ -31,6 +31,7 @@
           radial-gradient(circle at 80% 0%,var(--bg-highlight2) 0,transparent 45%),
           var(--bg-main);
         transition:background .4s ease;
+        padding-top:70px;
       }
 
       body::before{
@@ -48,6 +49,41 @@
           radial-gradient(circle at 55% 80%,#ec4899 0 3px,transparent 4px);
         background-size:220px 220px,260px 260px,240px 240px,260px 260px,300px 300px,320px 320px;
         z-index:-2;
+      }
+
+      /* Back button */
+      .back-btn{
+        position:fixed;
+        top:20px;
+        left:20px;
+        display:flex;
+        align-items:center;
+        gap:8px;
+        padding:10px 18px;
+        border-radius:999px;
+        background:rgba(255,255,255,0.95);
+        border:2px solid var(--ink);
+        box-shadow:3px 3px 0 var(--ink);
+        font-size:0.9rem;
+        font-weight:600;
+        color:var(--ink);
+        text-decoration:none;
+        cursor:pointer;
+        transition:transform .18s ease, box-shadow .18s ease;
+        z-index:100;
+        font-family:"Plus Jakarta Sans",system-ui,sans-serif;
+      }
+      .back-btn:hover{
+        transform:translate(-2px,-2px);
+        box-shadow:5px 5px 0 var(--ink);
+      }
+      .back-btn:active{
+        transform:translate(1px,1px);
+        box-shadow:1px 1px 0 var(--ink);
+      }
+      .back-arrow{
+        font-size:1.2rem;
+        line-height:1;
       }
 
       .page{
@@ -211,6 +247,8 @@
       }
 
       @media(max-width:640px){
+        body{padding-top:65px;}
+        .back-btn{top:15px;left:15px;padding:8px 14px;font-size:0.85rem;}
         canvas{height:360px;}
       }
 
@@ -261,6 +299,13 @@
     </style>
   </head>
   <body>
+
+    <!-- Back to Homepage button -->
+    <a href="index.html" class="back-btn">
+      <span class="back-arrow">←</span>
+      <span>Go to Homepage</span>
+    </a>
+
     <div class="page">
       <header>
         <div class="tagline">Draw anything you want ✏️</div>
@@ -527,7 +572,7 @@
           "This already looks fun.",
           "No rules. Just scribble.",
           "Messy = good.",
-          "Keep drawing, don’t think too much."
+          "Keep drawing, don't think too much."
         ];
         return msgs[Math.floor(Math.random()*msgs.length)];
       }
