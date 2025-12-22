@@ -1,308 +1,519 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- journal page-->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G&G - Journal</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+  <meta charset="UTF-8" />
+  <title>Diary Entry</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
 
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Playfair+Display:wght@600&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
 
-    <style>
-        /* Backgrounds */
-        .bg-main {
-            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #1e293b, #0f172a);
-            background-size: 300% 300%; position: fixed; inset: 0; z-index: -1;
-        }
-        .noise {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 0; opacity: 0.05;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
+    :root{
+      --paper:#fdfbf6;
+      --paper-dot:#e5e7eb;
+      --ink:#111827;
+      --bg-main:#f9a8d4;
+      --bg-highlight1:rgba(255,255,255,0.8);
+      --bg-highlight2:rgba(255,255,255,0.75);
+    }
 
-        /* Post Card Style Accha */
-        .paper-note {
-            box-shadow: 2px 4px 15px rgba(0,0,0,0.2);
-            transition: all 0.3s ease; position: relative;
-            /* Jagged paper effect */
-            clip-path: polygon(0% 2%, 2% 0%, 5% 2%, 8% 0%, 10% 2%, 15% 0%, 20% 2%, 25% 0%, 30% 2%, 35% 0%, 40% 2%, 45% 0%, 50% 2%, 55% 0%, 60% 2%, 65% 0%, 70% 2%, 75% 0%, 80% 2%, 85% 0%, 90% 2%, 95% 0%, 100% 2%, 100% 100%, 0% 100%);
-        }
-        .paper-note:hover { transform: rotate(0deg) scale(1.02) !important; z-index: 10; }
+    body{
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:stretch;
+      font-family:"Patrick Hand","Plus Jakarta Sans",system-ui,sans-serif;
+      background:
+        radial-gradient(circle at 10% 10%,var(--bg-highlight1) 0,transparent 45%),
+        radial-gradient(circle at 80% 0%,var(--bg-highlight2) 0,transparent 45%),
+        var(--bg-main);
+      color:#0f172a;
+      transition:background .4s ease;
+      padding-top:70px;
+    }
 
-        /* Buttons */
-        .nav-tab { transition: all 0.2s; opacity: 0.8; }
-        .nav-tab.on { opacity: 1; transform: scale(1.05); font-weight: bold; border: 2px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-        
-        /* Modal */
-        .overlay {
-            background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(8px);
-            opacity: 0; pointer-events: none; transition: opacity 0.3s;
-        }
-        .overlay.show { opacity: 1; pointer-events: all; }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.25;
+      background-image:
+        radial-gradient(circle at 15% 20%,#fb7185 0 2px,transparent 3px),
+        radial-gradient(circle at 70% 30%,#facc15 0 2px,transparent 3px),
+        radial-gradient(circle at 30% 75%,#22c55e 0 2px,transparent 3px),
+        radial-gradient(circle at 85% 70%,#0ea5e9 0 2px,transparent 3px);
+      background-size:220px 220px,260px 260px,240px 240px,260px 260px;
+      z-index:-1;
+    }
 
-        /* Color circles */
-        .dot { 
-            width: 32px; height: 32px; border-radius: 50%; cursor: pointer; 
-            border: 2px solid transparent; transition: transform 0.2s; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        .dot:hover { transform: scale(1.1); }
-        .dot.picked { 
-            border-color: #334155; transform: scale(1.25); 
-            box-shadow: 0 0 0 2px rgba(255,255,255,0.8); 
-        }
-    </style>
+    /* Back button */
+    .back-btn{
+      position:fixed;
+      top:20px;
+      left:20px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 18px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.9);
+      border:2px solid var(--ink);
+      box-shadow:3px 3px 0 var(--ink);
+      font-size:0.9rem;
+      font-weight:600;
+      color:var(--ink);
+      text-decoration:none;
+      cursor:pointer;
+      transition:transform .18s ease, box-shadow .18s ease;
+      z-index:100;
+      font-family:"Plus Jakarta Sans",system-ui,sans-serif;
+    }
+    .back-btn:hover{
+      transform:translate(-2px,-2px);
+      box-shadow:5px 5px 0 var(--ink);
+    }
+    .back-btn:active{
+      transform:translate(1px,1px);
+      box-shadow:1px 1px 0 var(--ink);
+    }
+    .back-arrow{
+      font-size:1.2rem;
+      line-height:1;
+    }
 
-    <script>
-        tailwind.config = {
-            theme: {
-                fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'], serif: ['"Playfair Display"', 'serif'], hand: ['"Kalam"', 'cursive'] },
-                extend: {
-                    animation: { 'pop-up': 'fadeIn 0.3s ease-out forwards' },
-                    keyframes: { fadeIn: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } } }
-                }
-            }
-        }
-    </script>
+    .page{
+      width:100%;
+      max-width:1024px;
+      padding:16px 12px 24px;
+      margin:0 auto;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      position:relative;
+    }
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+    }
+
+    .title-main{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .title-text{
+      font-size:26px;
+      font-weight:600;
+    }
+    .sub{
+      font-size:13px;
+      color:#374151;
+    }
+
+    .title-decor span{
+      font-size:20px;
+      text-shadow:0 2px 0 rgba(15,23,42,0.3);
+      animation:floatY 3s ease-in-out infinite;
+    }
+    .heart1{color:#fb7185;animation-delay:0s;}
+    .star1{color:#facc15;animation-delay:.4s;}
+    .heart2{color:#ec4899;animation-delay:.8s;}
+
+    .layout{
+      margin-top:12px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    @media(min-width:880px){
+      .layout{flex-direction:row;align-items:stretch;}
+    }
+
+    .left{
+      flex:1.2;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .toolbar{
+      border-radius:24px;
+      border:2px solid var(--ink);
+      background:#fee2f2;
+      box-shadow:4px 4px 0 var(--ink);
+      padding:10px 12px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      font-size:13px;
+      align-items:center;
+    }
+
+    .tool-btn{
+      border-radius:999px;
+      border:2px solid var(--ink);
+      background:#fefce8;
+      padding:4px 9px;
+      font-size:12px;
+      cursor:pointer;
+      box-shadow:2px 2px 0 var(--ink);
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+    }
+    .tool-btn:active{
+      transform:translate(1px,1px);
+      box-shadow:0 0 0 var(--ink);
+      background:#fef3c7;
+    }
+
+    .label-small{
+      font-size:11px;
+      color:#4b5563;
+      margin:0 4px;
+    }
+
+    .color-dot{
+      width:20px;
+      height:20px;
+      border-radius:999px;
+      border:2px solid var(--ink);
+      cursor:pointer;
+      box-shadow:1px 1px 0 var(--ink);
+    }
+    .color-dot:active{
+      transform:scale(0.95);
+    }
+
+    .paper-wrap{
+      border-radius:24px;
+      border:3px solid var(--ink);
+      background:#fee2f2;
+      box-shadow:6px 6px 0 var(--ink);
+      padding:10px;
+      transition:background .3s ease;
+    }
+
+    .paper{
+      position:relative;
+      border-radius:18px;
+      border:2px dashed #e5e7eb;
+      background:var(--paper);
+      background-image:radial-gradient(circle at 1px 1px,var(--paper-dot) 1px,transparent 0);
+      background-size:18px 18px;
+      min-height:280px;
+      padding:14px 14px 40px;
+      font-size:15px;
+      line-height:1.7;
+      outline:none;
+      white-space:pre-wrap;
+    }
+    .paper:empty:before{
+      content:"today i want to talk about…";
+      color:#9ca3af;
+    }
+    .paper::selection{background:rgba(244,114,182,0.35);}
+
+    .paper-footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:6px;
+      font-size:11px;
+      color:#6b7280;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+
+    .chip{
+      padding:3px 8px;
+      border-radius:999px;
+      border:2px solid var(--ink);
+      background:#fff;
+      cursor:pointer;
+      font-size:11px;
+      box-shadow:2px 2px 0 var(--ink);
+    }
+    .chip.active{
+      background:#0f172a;
+      color:#f9fafb;
+    }
+
+    .save-btn{
+      padding:4px 10px;
+      border-radius:999px;
+      border:2px solid var(--ink);
+      background:#bbf7d0;
+      cursor:pointer;
+      font-size:11px;
+      box-shadow:2px 2px 0 var(--ink);
+      font-weight:600;
+    }
+    .save-btn:active{
+      transform:translate(1px,1px);
+      box-shadow:0 0 0 var(--ink);
+    }
+
+    .right{
+      flex:0.9;
+      border-radius:24px;
+      border:2px solid var(--ink);
+      padding:10px 12px 12px;
+      background:linear-gradient(180deg,#fee2f2,#fef3c7);
+      box-shadow:4px 4px 0 var(--ink);
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      font-size:13px;
+    }
+    .side-title{font-size:13px;font-weight:600;}
+
+    .mood-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:6px;
+      margin-top:4px;
+    }
+    .mood-btn{
+      border-radius:16px;
+      border:2px solid var(--ink);
+      background:rgba(255,255,255,0.9);
+      padding:4px 3px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:1px;
+      cursor:pointer;
+      font-size:11px;
+    }
+    .mood-btn span:first-child{font-size:15px;}
+    .mood-btn.active{
+      background:#0f172a;
+      color:#f9fafb;
+    }
+
+    .side-note{font-size:11px;color:#4b5563;line-height:1.5;}
+
+    @keyframes floatY{
+      0%,100%{transform:translateY(0);}
+      50%{transform:translateY(-4px);}
+    }
+
+    @media(max-width:860px){
+      body{padding-top:65px;}
+      .back-btn{top:15px;left:15px;padding:8px 14px;font-size:0.85rem;}
+      .page{padding:14px 10px 20px;}
+      .layout{flex-direction:column;}
+    }
+  </style>
 </head>
-<body class="min-h-screen text-slate-800 font-sans selection:bg-rose-200">
+<body>
 
-    <div class="bg-main"></div>
-    <div class="noise"></div>
+  <!-- Back to Homepage button -->
+  <a href="index.html" class="back-btn">
+    <span class="back-arrow">←</span>
+    <span>Go to Homepage</span>
+  </a>
 
-    <!-- Header -->
-    <header class="fixed top-0 w-full p-4 md:p-6 flex justify-between items-center z-50 bg-slate-900/50 backdrop-blur-md border-b border-white/10">
-        <a href="index.html" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
-            <i data-lucide="arrow-left" class="w-5 h-5"></i>
-        </a>
-        
-        <div class="flex flex-col leading-none text-center">
-            <span class="font-serif font-bold text-xl text-white tracking-wide">Greatful</span>
-            <span class="font-sans text-[10px] font-bold text-slate-300 uppercase tracking-[0.2em]">& Grounded</span>
-        </div>
-
-        <div onclick="window.location.href='index.html'" class="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white shadow-lg group cursor-pointer hover:bg-white/20 transition">
-            <i data-lucide="cat" class="w-5 h-5 group-hover:rotate-12 transition-transform duration-300"></i>
-        </div>
+  <div class="page">
+    <header>
+      <div class="title-main">
+        <span class="title-text">Diary entry</span>
+        <p class="sub">Write exactly how your brain talks. Highlight lines, change colors, keep it chaotic.</p>
+      </div>
+      <div class="title-decor">
+        <span class="heart1">♥</span>
+        <span class="star1">★</span>
+        <span class="heart2">♥</span>
+      </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="relative pt-28 pb-20 px-4 max-w-xl mx-auto flex flex-col items-center gap-6">
+    <section class="layout">
+      <!-- left -->
+      <div class="left">
+        <div class="toolbar">
+          <button type="button" class="tool-btn" data-cmd="bold"><span style="font-weight:700;">B</span></button>
+          <button type="button" class="tool-btn" data-cmd="italic"><span style="font-style:italic;">i</span></button>
+          <button type="button" class="tool-btn" data-cmd="underline"><span style="text-decoration:underline;">U</span></button>
 
-        <!-- Top buttons -->
-        <div class="flex flex-wrap justify-center gap-4 w-full">
-            <button onclick="setFilter('my')" id="tab-my" class="nav-tab px-6 py-2 bg-pink-300 text-pink-900 rounded-full font-hand font-bold text-lg shadow-lg rotate-[-1deg]">
-                Our Post (Me)
-            </button>
-            <button onclick="openModal()" class="nav-tab px-6 py-2 bg-blue-300 text-blue-900 rounded-full font-hand font-bold text-lg shadow-lg rotate-[1deg] hover:scale-110">
-                + Spread Positivity
-            </button>
+          <span class="label-small">Text</span>
+          <div class="color-dot" data-color="#111827" style="background:#111827;"></div>
+          <div class="color-dot" data-color="#fb7185" style="background:#fb7185;"></div>
+          <div class="color-dot" data-color="#0ea5e9" style="background:#0ea5e9;"></div>
+          <div class="color-dot" data-color="#22c55e" style="background:#22c55e;"></div>
+
+          <span class="label-small">Highlight</span>
+          <div class="color-dot" data-hl="#fef08a" style="background:#fef08a;"></div>
+          <div class="color-dot" data-hl="#fed7e2" style="background:#fed7e2;"></div>
+          <div class="color-dot" data-hl="#bfdbfe" style="background:#bfdbfe;"></div>
         </div>
 
-        <!-- Filter tabs -->
-        <div class="flex gap-4 w-full">
-            <button onclick="setFilter('social')" id="tab-social" class="nav-tab flex-1 py-3 bg-yellow-100 border-b-4 border-yellow-200 text-yellow-800 rounded-xl font-hand font-bold text-xl shadow-sm on">
-                Social
+        <div class="paper-wrap" id="paperWrap">
+          <div id="paper" class="paper" contenteditable="true"></div>
+          <div class="paper-footer">
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+              <span>Tag:</span>
+              <button type="button" class="chip" data-tag="school">school</button>
+              <button type="button" class="chip" data-tag="family">family</button>
+              <button type="button" class="chip" data-tag="health">health</button>
+            </div>
+            <button type="button" class="save-btn" id="saveBtn">💾 Save</button>
+            <span id="charCount">0 chars</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- right -->
+      <aside class="right">
+        <div>
+          <div class="side-title">today's mood bubble</div>
+          <div class="mood-grid">
+            <button type="button" class="mood-btn" data-mood="calm">
+              <span>🌿</span><span>calm</span>
             </button>
-            <button onclick="setFilter('friends')" id="tab-friends" class="nav-tab flex-1 py-3 bg-cyan-100 border-b-4 border-cyan-200 text-cyan-800 rounded-xl font-hand font-bold text-xl shadow-sm">
-                Friends
+            <button type="button" class="mood-btn" data-mood="happy">
+              <span>🌈</span><span>bright</span>
             </button>
+            <button type="button" class="mood-btn" data-mood="tired">
+              <span>😴</span><span>tired</span>
+            </button>
+            <button type="button" class="mood-btn" data-mood="anxious">
+              <span>💭</span><span>spinning</span>
+            </button>
+            <button type="button" class="mood-btn" data-mood="sad">
+              <span>🌧️</span><span>heavy</span>
+            </button>
+            <button type="button" class="mood-btn" data-mood="proud">
+              <span>🏅</span><span>proud</span>
+            </button>
+          </div>
         </div>
 
-        <!-- Feed Area -->
-        <div id="feed" class="w-full flex flex-col gap-6"></div>
+        <p class="side-note" id="moodHint">
+          Pick one bubble and start with one sentence: "today, the main thing on my mind is…"
+        </p>
+      </aside>
+    </section>
+  </div>
 
-    </main>
+  <script>
+    const paper = document.getElementById('paper');
+    const charCount = document.getElementById('charCount');
+    const paperWrap = document.getElementById('paperWrap');
+    const saveBtn = document.getElementById('saveBtn');
 
-    <!-- Modal -->
-    <div id="modal-overlay" class="overlay fixed inset-0 z-[60] flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-md rounded-lg shadow-2xl p-6 transform scale-95 transition-transform duration-300 relative overflow-hidden" id="modal-box">
-            
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="font-hand text-3xl font-bold text-slate-800">Customize Your Note 🎨</h2>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-6 h-6"></i></button>
-            </div>
-            
-            <textarea id="note-text" rows="5" placeholder="Write something amazing..." 
-                class="w-full p-5 rounded-sm border-none shadow-inner outline-none font-hand text-xl resize-none transition-colors duration-300"
-                style="background-color: #fef9c3; color: #422006;"></textarea>
+    // track last highlight 
+    let lastHighlightColor = null;
 
-            <div class="mt-4 flex flex-col gap-2">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Pick a Color</span>
-                <div class="flex gap-3">
-                    <div id="c1" onclick="setColor('#fef9c3', 'text-yellow-900', this)" class="dot bg-yellow-100 picked"></div>
-                    <div id="c2" onclick="setColor('#dbeafe', 'text-blue-900', this)" class="dot bg-blue-100"></div>
-                    <div id="c3" onclick="setColor('#fce7f3', 'text-pink-900', this)" class="dot bg-pink-100"></div>
-                    <div id="c4" onclick="setColor('#dcfce7', 'text-green-900', this)" class="dot bg-green-100"></div>
-                    <div id="c5" onclick="setColor('#f3e8ff', 'text-purple-900', this)" class="dot bg-purple-100"></div>
-                    <div id="c6" onclick="setColor('#ffffff', 'text-slate-900', this)" class="dot bg-white border border-slate-200"></div>
-                </div>
-            </div>
+    // Bold / Italic / Underline
+    document.querySelectorAll('.tool-btn[data-cmd]').forEach(btn=>{
+      btn.addEventListener('mousedown', e => {
+        e.preventDefault();
+      });
+      btn.addEventListener('click',()=>{
+        const cmd = btn.dataset.cmd;
+        document.execCommand(cmd, false, null);
+        paper.focus();
+      });
+    });
 
-            <div class="flex justify-end gap-3 mt-6">
-                <button onclick="closeModal()" class="px-4 py-2 text-slate-500 font-bold hover:bg-slate-100 rounded-lg">Cancel</button>
-                <button onclick="addPost()" class="px-6 py-2 bg-slate-900 text-white font-bold rounded-lg hover:bg-slate-800 shadow-lg flex items-center gap-2">
-                    Post It <i data-lucide="send" class="w-4 h-4"></i>
-                </button>
-            </div>
-        </div>
-    </div>
+    // Text color
+    document.querySelectorAll('.color-dot[data-color]').forEach(dot=>{
+      dot.addEventListener('mousedown', e => {
+        e.preventDefault();
+      });
+      dot.addEventListener('click',()=>{
+        const color = dot.dataset.color;
+        document.execCommand('foreColor', false, color);
+        paper.focus();
+      });
+    });
 
-    <script>
-        lucide.createIcons();
-
-        // Data
-        let myBg = '#fef9c3';
-        let myColor = 'text-yellow-900';
-        let mode = 'social';
+    // Highlight color 
+    document.querySelectorAll('.color-dot[data-hl]').forEach(dot=>{
+      dot.addEventListener('mousedown', e => {
+        e.preventDefault();
+      });
+      dot.addEventListener('click',()=>{
+        const color = dot.dataset.hl;
         
-        const me = { name: "You", handle: "@me", av: "bg-purple-100 text-purple-600" };
-        
-        let db = [
-            { id: 1, user: "Vish", time: "2 min ago", text: "Today I just sat in my garden and watched the clouds move. ☁️✨", type: "friends", likes: 12, com: 2, av: "bg-slate-200 text-slate-600", bg: "#ffffff", tc: "text-slate-800" },
-            { id: 2, user: "Archit", time: "1 hour ago", text: "Same", type: "friends", likes: 5, com: 0, big: true, av: "bg-blue-100 text-blue-600", bg: "#dbeafe", tc: "text-blue-900" },
-            { id: 3, user: "Stranger", time: "3 hours ago", text: "Found a lost puppy today! 🐶❤️", type: "social", likes: 45, com: 8, av: "bg-green-100 text-green-600", bg: "#dcfce7", tc: "text-green-900" }
-        ];
-
-        // Draw Feed
-        function load() {
-            const box = document.getElementById('feed');
-            box.innerHTML = "";
-
-            let list = [];
-            if (mode === 'social') list = db;
-            else if (mode === 'friends') list = db.filter(x => x.type === 'friends' || x.type === 'my');
-            else if (mode === 'my') list = db.filter(x => x.type === 'my');
-
-            // Tabs UI
-            document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('on'));
-            if(mode === 'my') document.getElementById('tab-my').classList.add('on');
-            else if(mode === 'friends') document.getElementById('tab-friends').classList.add('on');
-            else document.getElementById('tab-social').classList.add('on');
-
-            if(list.length === 0) {
-                box.innerHTML = `<div class='text-white/50 text-center mt-10 font-hand text-xl'>No posts here yet... 🍂</div>`;
-                return;
-            }
-
-            list.forEach(p => {
-                const bigText = p.big ? 'text-5xl text-center py-6' : 'text-xl';
-                const rot = Math.random() * 3 - 1.5; 
-
-                // template
-                const html = `
-                    <div class="paper-note w-full p-6 rounded-sm animate-pop-up" style="transform: rotate(${rot}deg); background-color: ${p.bg};">
-                        <div class="flex justify-between items-start mb-3">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full ${p.av} flex items-center justify-center font-bold text-sm bg-white/50">${p.user[0]}</div>
-                                <div>
-                                    <h3 class="font-bold text-lg leading-none ${p.tc}">${p.user}</h3>
-                                    <span class="text-xs opacity-60 ${p.tc}">${p.time}</span>
-                                </div>
-                            </div>
-                            <i data-lucide="more-horizontal" class="opacity-40 w-5 h-5 cursor-pointer hover:opacity-100"></i>
-                        </div>
-                        <div class="mb-4">
-                            <p class="font-hand mt-2 leading-relaxed ${bigText} ${p.tc}">
-                                ${p.text}
-                            </p>
-                        </div>
-                        <div class="flex justify-between items-center pt-3 border-t border-black/5">
-                            <div class="flex gap-6 opacity-60 ${p.tc}">
-                                <button onclick="like(${p.id})" class="flex items-center gap-1 hover:opacity-100 transition group">
-                                    <i data-lucide="heart" class="w-5 h-5 group-hover:scale-110 transition ${p.liked ? 'fill-red-500 text-red-500' : ''}"></i>
-                                    <span class="text-sm font-bold">${p.likes}</span>
-                                </button>
-                                <button class="flex items-center gap-1 hover:opacity-100 transition group">
-                                    <i data-lucide="message-circle" class="w-5 h-5 group-hover:scale-110 transition"></i>
-                                    <span class="text-sm font-bold">${p.com}</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                box.innerHTML += html;
-            });
-            lucide.createIcons();
+        // double highlight toggle
+        if(lastHighlightColor === color){
+          document.execCommand('hiliteColor', false, 'transparent'); // Remove highlight
+          lastHighlightColor = null;
+        } else {
+          document.execCommand('hiliteColor', false, color); // Apply highlight
+          lastHighlightColor = color;
         }
+        paper.focus();
+      });
+    });
 
-        function setFilter(t) { 
-            mode = t; 
-            load(); 
+    // Character counter
+    paper.addEventListener('input',()=>{
+      const len = (paper.innerText || '').trim().length;
+      charCount.textContent = len + ' chars';
+    });
+
+    // Tag chips
+    document.querySelectorAll('.chip').forEach(chip=>{
+      chip.addEventListener('click',()=>{
+        document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+        chip.classList.add('active');
+      });
+    });
+
+    // Save button
+    saveBtn.addEventListener('click', () => {
+      const content = paper.innerText || '';
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      const today = new Date().toISOString().split('T')[0];
+      a.download = `diary_${today}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // Mood buttons
+    const moodHint = document.getElementById('moodHint');
+    const moodTexts = {
+      calm:"Write about one thing that felt steady or safe today, even if it was tiny.",
+      happy:"Describe the good moment like a screenshot so future‑you can re‑read it.",
+      tired:"List what drained you today. Bullet style is totally fine.",
+      anxious:"Dump every worry, then underline only the ones you can actually do something about.",
+      sad:"Let this page hold whatever you don't want to say out loud yet.",
+      proud:"Write what you did and why it secretly matters to you."
+    };
+
+    document.querySelectorAll('.mood-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const mood = btn.dataset.mood;
+        moodHint.textContent = moodTexts[mood] || moodHint.textContent;
+
+        const bgMap = {
+          calm:"#e0f2fe",
+          happy:"#fef3c7",
+          tired:"#f1f5f9",
+          anxious:"#fee2e2",
+          sad:"#e5e7eb",
+          proud:"#d1fae5"
+        };
+        const newBg = bgMap[mood];
+        if(newBg){
+          paperWrap.style.backgroundColor = newBg;
         }
-
-        function like(id) {
-            const p = db.find(x => x.id === id);
-            if (p.liked) { p.likes--; p.liked = false; } 
-            else { p.likes++; p.liked = true; }
-            load();
-        }
-
-        // Color Picker
-        function setColor(bg, txt, el) {
-            myBg = bg;
-            myColor = txt;
-            
-            const area = document.getElementById('note-text');
-            area.style.backgroundColor = bg;
-            
-            // simple contrast check
-            if(txt.includes('slate')) area.style.color = '#1e293b';
-            else if(txt.includes('yellow')) area.style.color = '#422006';
-            else if(txt.includes('blue')) area.style.color = '#1e3a8a';
-            else if(txt.includes('pink')) area.style.color = '#831843';
-            else if(txt.includes('green')) area.style.color = '#14532d';
-            else if(txt.includes('purple')) area.style.color = '#581c87';
-
-            // UI update
-            document.querySelectorAll('.dot').forEach(d => d.classList.remove('picked'));
-            el.classList.add('picked');
-        }
-
-        function openModal() {
-            document.getElementById('modal-overlay').classList.add('show');
-            document.getElementById('modal-box').style.transform = 'scale(1)';
-            // reset
-            setColor('#fef9c3', 'text-yellow-900', document.getElementById('c1'));
-        }
-
-        function closeModal() {
-            document.getElementById('modal-overlay').classList.remove('show');
-            document.getElementById('modal-box').style.transform = 'scale(0.95)';
-        }
-
-        function addPost() {
-            const val = document.getElementById('note-text').value;
-            if (val == "") {
-                alert("Write something first!");
-                return;
-            }
-
-            const item = {
-                id: Date.now(),
-                user: me.name,
-                time: "Just now",
-                text: val,
-                type: "my",
-                likes: 0,
-                com: 0,
-                av: me.av,
-                bg: myBg,
-                tc: myColor
-            };
-
-            db.unshift(item); // add to top
-            closeModal();
-            document.getElementById('note-text').value = "";
-            setFilter('my');
-        }
-
-        // Init
-        load();
-
-    </script>
+      });
+    });
+  </script>
 </body>
 </html>
