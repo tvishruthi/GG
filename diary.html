@@ -30,6 +30,7 @@
         var(--bg-main);
       color:#0f172a;
       transition:background .4s ease;
+      padding-top:70px;
     }
 
     body::before{
@@ -45,6 +46,41 @@
         radial-gradient(circle at 85% 70%,#0ea5e9 0 2px,transparent 3px);
       background-size:220px 220px,260px 260px,240px 240px,260px 260px;
       z-index:-1;
+    }
+
+    /* Back button */
+    .back-btn{
+      position:fixed;
+      top:20px;
+      left:20px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 18px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.9);
+      border:2px solid var(--ink);
+      box-shadow:3px 3px 0 var(--ink);
+      font-size:0.9rem;
+      font-weight:600;
+      color:var(--ink);
+      text-decoration:none;
+      cursor:pointer;
+      transition:transform .18s ease, box-shadow .18s ease;
+      z-index:100;
+      font-family:"Plus Jakarta Sans",system-ui,sans-serif;
+    }
+    .back-btn:hover{
+      transform:translate(-2px,-2px);
+      box-shadow:5px 5px 0 var(--ink);
+    }
+    .back-btn:active{
+      transform:translate(1px,1px);
+      box-shadow:1px 1px 0 var(--ink);
+    }
+    .back-arrow{
+      font-size:1.2rem;
+      line-height:1;
     }
 
     .page{
@@ -269,12 +305,21 @@
     }
 
     @media(max-width:860px){
+      body{padding-top:65px;}
+      .back-btn{top:15px;left:15px;padding:8px 14px;font-size:0.85rem;}
       .page{padding:14px 10px 20px;}
       .layout{flex-direction:column;}
     }
   </style>
 </head>
 <body>
+
+  <!-- Back to Homepage button -->
+  <a href="index.html" class="back-btn">
+    <span class="back-arrow">←</span>
+    <span>Go to Homepage</span>
+  </a>
+
   <div class="page">
     <header>
       <div class="title-main">
@@ -362,7 +407,7 @@
     const paperWrap = document.getElementById('paperWrap');
     const saveBtn = document.getElementById('saveBtn');
 
-    // track lasst highlight 
+    // track last highlight 
     let lastHighlightColor = null;
 
     // Bold / Italic / Underline
@@ -397,9 +442,9 @@
       dot.addEventListener('click',()=>{
         const color = dot.dataset.hl;
         
-        // double highlisht 
+        // double highlight toggle
         if(lastHighlightColor === color){
-          document.execCommand('hiliteColor', false, 'transparent'); // Remove highlight [web:280]
+          document.execCommand('hiliteColor', false, 'transparent'); // Remove highlight
           lastHighlightColor = null;
         } else {
           document.execCommand('hiliteColor', false, color); // Apply highlight
