@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G&G - Daily Affirmations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Playfair+Display:wght@600&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+            hand: ['"Kalam"', 'cursive']
+          },
+          extend: {
+            animation: {
+              'fade-in': 'fadeIn 0.5s ease-out forwards'
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': {
+                  opacity: '0',
+                  transform: 'translateY(10px)'
+                },
+                '100%': {
+                  opacity: '1',
+                  transform: 'translateY(0)'
+                }
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      .bg-deep-space {
+        background: radial-gradient(circle at top, #1e1b4b, #0f172a);
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+      }
+
+      .particle {
+        position: absolute;
+        border-radius: 50%;
+        background: white;
+        opacity: 0.3;
+        animation: float 10s infinite;
+      }
+
+      @keyframes float {
+
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+
+      .neon-tab {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #e2e8f0;
+        transition: all 0.3s ease;
+      }
+
+      .neon-tab.active {
+        background: rgba(236, 72, 153, 0.2);
+        border-color: #ec4899;
+        color: #fbcfe8;
+        box-shadow: 0 0 15px rgba(236, 72, 153, 0.3);
+      }
+
+      .affirm-card {
+        margin-bottom: 2rem;
+        border-radius: 20px;
+        overflow: hidden;
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        break-inside: avoid;
+      }
+
+      .affirm-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(236, 72, 153, 0.3);
+      }
+
+      /* Card Glass logic based on background brightness */
+      .card-glass {
+        background: rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(0px);
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1.5rem;
+        color: #1e293b;
+      }
+
+      .text-light .card-glass {
+        color: white;
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(2px);
+      }
+
+      .text-dark .card-glass {
+        color: #334155;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .masonry-grid {
+        column-count: 1;
+      }
+
+      @media (min-width: 640px) {
+        .masonry-grid {
+          column-count: 2;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .masonry-grid {
+          column-count: 3;
+        }
+      }
+
+      .modal-overlay {
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(5px);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s;
+      }
+
+      .modal-overlay.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .color-dot {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        transition: transform 0.2s;
+        background-size: cover;
+      }
+
+      .color-dot:hover {
+        transform: scale(1.1);
+      }
+
+      .color-dot.selected {
+        border-color: white;
+        transform: scale(1.2);
+        box-shadow: 0 0 10px white;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen text-slate-100 font-sans selection:bg-pink-500">
+    <div class="bg-deep-space"></div>
+    <div id="particles" class="fixed inset-0 pointer-events-none z-[-1]"></div>
+    <!-- Header -->
+    <header class="fixed top-0 w-full p-4 flex justify-between items-center z-50 bg-slate-900/80 backdrop-blur-md border-b border-white/5">
+      <div onclick="window.location.href='index.html'" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white cursor-pointer hover:bg-white/20">
+        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+      </div>
+      <!-- FIXED LOGO HERE -->
+      <div class="flex flex-col leading-none text-center">
+        <span class="font-serif font-bold text-xl text-transparent bg-clip-text bg-gradient-to-r from-pink-300 to-purple-300 tracking-wide">Greatful</span>
+        <span class="font-sans text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">& Grounded</span>
+      </div>
+      <div onclick="window.location.href='index.html'" class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg cursor-pointer group hover:scale-110 transition border-2 border-slate-200">
+        <i data-lucide="cat" class="w-5 h-5 text-black group-hover:rotate-12 transition-transform duration-300"></i>
+      </div>
+    </header>
+    <main class="relative pt-24 pb-20 px-6 max-w-7xl mx-auto">
+      <div class="text-center mb-8 animate-fade-in">
+        <h1 class="font-hand text-5xl md:text-6xl text-white drop-shadow-2xl mb-2">Daily Affirmations</h1>
+        <p class="font-hand text-xl text-slate-300">Shift your perspective. ✨</p>
+      </div>
+      <!-- TABS -->
+      <div class="flex flex-wrap justify-center gap-4 mb-10 animate-fade-in">
+        <button onclick="switchTab('feed')" id="tab-feed" class="neon-tab px-6 py-2 rounded-xl font-hand text-xl active">Feed</button>
+        <button onclick="switchTab('liked')" id="tab-liked" class="neon-tab px-6 py-2 rounded-xl font-hand text-xl">Liked ❤️</button>
+        <button onclick="switchTab('saved')" id="tab-saved" class="neon-tab px-6 py-2 rounded-xl font-hand text-xl">Saved 🔖</button>
+        <button onclick="openModal()" class="neon-tab px-6 py-2 rounded-xl font-hand text-xl bg-pink-600/20 border-pink-500 text-white font-bold flex items-center gap-2 hover:bg-pink-600/40"> Write ✏️ </button>
+      </div>
+      <!-- GRID CONTAINER -->
+      <div id="grid-container" class="masonry-grid gap-6 animate-fade-in"></div>
+      <div id="empty-msg" class="hidden text-center mt-20">
+        <p class="font-hand text-3xl text-slate-500">Nothing here yet... 🍃</p>
+      </div>
+    </main>
+    <!-- WRITE MODAL -->
+    <div id="write-modal" class="modal-overlay fixed inset-0 z-[60] flex items-center justify-center p-4">
+      <div class="bg-slate-900 border border-white/10 w-full max-w-md rounded-2xl shadow-2xl p-6 transform scale-95 transition-transform duration-300 relative max-h-[90vh] overflow-y-auto">
+        <h2 class="font-serif text-2xl text-white mb-4 text-center">Manifest It ✨</h2>
+        <!-- Preview Box -->
+        <div id="preview-box" class="w-full h-48 rounded-xl p-4 flex items-center justify-center text-center transition-all duration-300 mb-4 shadow-inner" style="background: #fce7f3; color: #334155;">
+          <textarea id="affirm-input" placeholder="I am..." class="w-full h-full bg-transparent placeholder-black/30 text-center font-hand text-3xl outline-none resize-none border-none focus:ring-0 shadow-none"></textarea>
+        </div>
+        <!-- Customization Controls -->
+        <div class="flex flex-col gap-4 mb-6">
+          <!-- Group 1: Pastels / Solids -->
+          <div>
+            <span class="text-xs font-bold text-slate-400 uppercase mb-2 block">Solids & Pastels</span>
+            <div class="flex gap-2 flex-wrap">
+              <div onclick="setBg('#fce7f3', 'dark', this)" class="color-dot selected" style="background: #fce7f3;"></div>
+              <!-- Light Pink -->
+              <div onclick="setBg('#e2e8f0', 'dark', this)" class="color-dot" style="background: #e2e8f0;"></div>
+              <!-- Light Grey -->
+              <div onclick="setBg('#ffedd5', 'dark', this)" class="color-dot" style="background: #ffedd5;"></div>
+              <!-- Peach -->
+              <div onclick="setBg('#dbeafe', 'dark', this)" class="color-dot" style="background: #dbeafe;"></div>
+              <!-- Light Blue -->
+              <div onclick="setBg('#f3e8ff', 'dark', this)" class="color-dot" style="background: #f3e8ff;"></div>
+              <!-- Light Purple -->
+              <div onclick="setBg('#dcfce7', 'dark', this)" class="color-dot" style="background: #dcfce7;"></div>
+              <!-- Light Green -->
+            </div>
+          </div>
+          <!-- Group 2: Gradients -->
+          <div>
+            <span class="text-xs font-bold text-slate-400 uppercase mb-2 block">Vibrant Gradients</span>
+            <div class="flex gap-2 flex-wrap">
+              <div onclick="setBg('linear-gradient(135deg, #ec4899, #8b5cf6)', 'light', this)" class="color-dot" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);"></div>
+              <div onclick="setBg('linear-gradient(135deg, #3b82f6, #14b8a6)', 'light', this)" class="color-dot" style="background: linear-gradient(135deg, #3b82f6, #14b8a6);"></div>
+              <div onclick="setBg('linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%)', 'dark', this)" class="color-dot" style="background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%);"></div>
+            </div>
+          </div>
+          <!-- Group 3: Nature -->
+          <div>
+            <span class="text-xs font-bold text-slate-400 uppercase mb-2 block">Nature</span>
+            <div class="flex gap-2 flex-wrap">
+              <div onclick="setBg('url(https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=60)', 'light', this)" class="color-dot" title="Beach" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=60');"></div>
+              <div onclick="setBg('url(https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=400&q=60)', 'light', this)" class="color-dot" title="Stars" style="background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=400&q=60');"></div>
+              <div onclick="setBg('url(https://images.unsplash.com/photo-1448375240586-dfd8d395ea6c?auto=format&fit=crop&w=400&q=60)', 'light', this)" class="color-dot" title="Forest" style="background-image: url('https://images.unsplash.com/photo-1448375240586-dfd8d395ea6c?auto=format&fit=crop&w=400&q=60');"></div>
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-end gap-3">
+          <button onclick="closeModal()" class="px-4 py-2 text-slate-400 hover:text-white transition">Cancel</button>
+          <button onclick="saveAffirmation()" class="px-6 py-2 bg-white text-pink-600 font-bold rounded-lg shadow-lg hover:bg-gray-100 transition">Post It</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      lucide.createIcons();
+      // --- DATA ---
+      let currentTab = 'feed';
+      let affirmations = [{
+        id: 1,
+        text: "I am growing and learning every day. 🌱",
+        bg: "#fce7f3",
+        theme: 'dark',
+        liked: false,
+        saved: false
+      }, {
+        id: 2,
+        text: "I am worthy of rest and joy. 💤",
+        bg: "#dbeafe",
+        theme: 'dark',
+        liked: false,
+        saved: false
+      }, {
+        id: 3,
+        text: "My potential is limitless. 🚀",
+        bg: "#e2e8f0",
+        theme: 'dark',
+        liked: false,
+        saved: false
+      }, {
+        id: 4,
+        text: "Peace begins with me. 🕊️",
+        bg: "url('https://images.unsplash.com/photo-1505118380757-91f5f5632de0?auto=format&fit=crop&w=600&q=80')",
+        theme: 'light',
+        liked: false,
+        saved: false
+      }, {
+        id: 5,
+        text: "I forgive myself and set myself free. 🌸",
+        bg: "#ffedd5",
+        theme: 'dark',
+        liked: false,
+        saved: false
+      }];
+      let tempBg = "#fce7f3";
+      let tempTheme = "dark";
+      // --- RENDER LOGIC ---
+      function renderGrid() {
+        const container = document.getElementById('grid-container');
+        const emptyMsg = document.getElementById('empty-msg');
+        container.innerHTML = "";
+        let filtered = [];
+        if (currentTab === 'feed') filtered = affirmations;
+        else if (currentTab === 'liked') filtered = affirmations.filter(a => a.liked);
+        else if (currentTab === 'saved') filtered = affirmations.filter(a => a.saved);
+        if (filtered.length === 0) {
+          emptyMsg.classList.remove('hidden');
+        } else {
+          emptyMsg.classList.add('hidden');
+          filtered.forEach(item => {
+            const textClass = item.theme === 'light' ? 'text-light' : 'text-dark';
+            const iconColor = item.theme === 'light' ? 'text-white' : 'text-slate-600';
+            const html = `
+                        
+						<div class="affirm-card h-64 md:h-72 animate-fade-in ${textClass}" style="background: ${item.bg}; background-size: cover;">
+							<div class="card-glass">
+								<p class="font-hand text-3xl leading-snug text-center mt-6 font-bold" style="text-shadow: ${item.theme === 'light' ? '0 2px 4px rgba(0,0,0,0.5)' : 'none'}">
+                                    ${item.text}
+                                </p>
+								<div class="flex justify-between items-center border-t ${item.theme === 'light' ? 'border-white/20' : 'border-black/10'} pt-3 mt-auto">
+									<button onclick="toggleLike(${item.id})" class="transition group">
+										<i data-lucide="heart" class="w-6 h-6 transition ${item.liked ? 'fill-pink-500 text-pink-500 scale-110' : iconColor + ' hover:text-pink-400'}"></i>
+									</button>
+									<div class="flex gap-4">
+										<button onclick="toggleSave(${item.id})" class="transition">
+											<i data-lucide="bookmark" class="w-6 h-6 transition ${item.saved ? 'fill-blue-500 text-blue-500 scale-110' : iconColor + ' hover:text-blue-400'}"></i>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+                    `;
+            container.innerHTML += html;
+          });
+          lucide.createIcons();
+        }
+      }
+      // --- ACTIONS ---
+      function switchTab(tab) {
+        currentTab = tab;
+        document.querySelectorAll('.neon-tab').forEach(b => b.classList.remove('active'));
+        document.getElementById(`tab-${tab}`)?.classList.add('active');
+        renderGrid();
+      }
+
+      function toggleLike(id) {
+        const item = affirmations.find(a => a.id === id);
+        if (item) item.liked = !item.liked;
+        renderGrid();
+      }
+
+      function toggleSave(id) {
+        const item = affirmations.find(a => a.id === id);
+        if (item) item.saved = !item.saved;
+        renderGrid();
+      }
+      // --- MODAL ---
+      const modal = document.getElementById('write-modal');
+
+      function openModal() {
+        modal.classList.add('open');
+        modal.querySelector('div').style.transform = 'scale(1)';
+      }
+
+      function closeModal() {
+        modal.classList.remove('open');
+        modal.querySelector('div').style.transform = 'scale(0.95)';
+      }
+
+      function setBg(bgStyle, theme, element) {
+        tempBg = bgStyle;
+        tempTheme = theme;
+        const preview = document.getElementById('preview-box');
+        preview.style.background = bgStyle;
+        preview.style.backgroundSize = 'cover';
+        preview.style.color = theme === 'light' ? 'white' : '#334155';
+        const input = document.getElementById('affirm-input');
+        input.className = `w-full h-full bg-transparent text-center font-hand text-3xl outline-none resize-none border-none focus:ring-0 shadow-none ${theme === 'light' ? 'placeholder-white/50' : 'placeholder-black/30'}`;
+        document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('selected'));
+        element.classList.add('selected');
+      }
+
+      function saveAffirmation() {
+        const text = document.getElementById('affirm-input').value;
+        if (!text.trim()) return alert("Please write something!");
+        const newAffirmation = {
+          id: Date.now(),
+          text: text,
+          bg: tempBg,
+          theme: tempTheme,
+          liked: false,
+          saved: false
+        };
+        affirmations.unshift(newAffirmation);
+        closeModal();
+        document.getElementById('affirm-input').value = "";
+        switchTab('feed');
+      }
+      const particleContainer = document.getElementById('particles');
+      for (let i = 0; i < 40; i++) {
+        const p = document.createElement('div');
+        p.classList.add('particle');
+        const size = Math.random() * 3;
+        p.style.width = `${size}px`;
+        p.style.height = `${size}px`;
+        p.style.left = `${Math.random() * 100}%`;
+        p.style.top = `${Math.random() * 100}%`;
+        p.style.animationDuration = `${Math.random() * 5 + 5}s`;
+        p.style.opacity = Math.random() * 0.5;
+        particleContainer.appendChild(p);
+      }
+      renderGrid();
+    </script>
+  </body>
+</html>
