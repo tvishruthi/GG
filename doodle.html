@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Just Doodle – No Rules ✏️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet" />
+    <style>
+      *{box-sizing:border-box;}
+
+      :root{
+        --paper:#fdfbf6;
+        --paper-dot:#e5e7eb;
+        --ink:#111827;
+        --bg-main:#bbf7d0;
+        --bg-highlight1:rgba(255,255,255,0.7);
+        --bg-highlight2:rgba(255,255,255,0.7);
+        --board:#dcfce7;
+        --tool-yellow:#facc15;
+      }
+
+      body{
+        margin:0;
+        font-family:"Patrick Hand",system-ui,sans-serif;
+        min-height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:stretch;
+        background:
+          radial-gradient(circle at 10% 10%,var(--bg-highlight1) 0,transparent 45%),
+          radial-gradient(circle at 80% 0%,var(--bg-highlight2) 0,transparent 45%),
+          var(--bg-main);
+        transition:background .4s ease;
+      }
+
+      body::before{
+        content:"";
+        position:fixed;
+        inset:0;
+        pointer-events:none;
+        opacity:.28;
+        background-image:
+          radial-gradient(circle at 15% 20%,#f97316 0 2px,transparent 3px),
+          radial-gradient(circle at 70% 30%,#fb7185 0 2px,transparent 3px),
+          radial-gradient(circle at 30% 75%,#22c55e 0 2px,transparent 3px),
+          radial-gradient(circle at 85% 70%,#0ea5e9 0 2px,transparent 3px),
+          radial-gradient(circle at 20% 55%,#f97316 0 3px,transparent 4px),
+          radial-gradient(circle at 55% 80%,#ec4899 0 3px,transparent 4px);
+        background-size:220px 220px,260px 260px,240px 240px,260px 260px,300px 300px,320px 320px;
+        z-index:-2;
+      }
+
+      .page{
+        width:100%;
+        max-width:1024px;
+        padding:16px 12px 24px;
+        margin:0 auto;
+        display:flex;
+        flex-direction:column;
+        gap:12px;
+        position:relative;
+        z-index:1;
+      }
+
+      header{text-align:center;}
+      .tagline{font-size:24px;}
+      .sub{font-size:13px;color:#374151;margin-top:2px;}
+
+      .layout{
+        margin-top:12px;
+        display:flex;
+        flex-direction:column;
+        gap:12px;
+      }
+
+      @media(min-width:880px){
+        .layout{
+          flex-direction:row;
+          align-items:stretch;
+        }
+      }
+
+      .toolbar{
+        flex:0 0 270px;
+        border-radius:24px;
+        border:2px solid var(--ink);
+        background:var(--tool-yellow);
+        box-shadow:4px 4px 0 var(--ink);
+        padding:12px 14px 14px;
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+        font-size:13px;
+      }
+
+      .section-title{
+        font-size:11px;
+        text-transform:uppercase;
+        letter-spacing:.16em;
+        color:#4b5563;
+        margin-bottom:2px;
+      }
+
+      .row{
+        display:flex;
+        align-items:center;
+        gap:8px;
+        flex-wrap:wrap;
+      }
+
+      .btn{
+        border-radius:999px;
+        border:2px solid var(--ink);
+        background:#fefce8;
+        padding:5px 10px;
+        font-size:12px;
+        cursor:pointer;
+        box-shadow:2px 2px 0 var(--ink);
+        display:inline-flex;
+        align-items:center;
+        gap:4px;
+        transition:transform .08s,box-shadow .08s,background .08s;
+      }
+
+      .btn:active{
+        transform:translate(1px,1px);
+        box-shadow:0 0 0 var(--ink);
+        background:#fef3c7;
+      }
+
+      .btn.active{
+        background:var(--ink);
+        color:#f9fafb;
+      }
+
+      .btn-pill{
+        padding:3px 8px;
+        border-radius:999px;
+        font-size:11px;
+      }
+
+      .theme-btn{
+        font-size:11px;
+        padding:4px 9px;
+        border-style:dashed;
+      }
+
+      .slider{flex:1;}
+
+      .color-dot{
+        width:20px;
+        height:20px;
+        border-radius:999px;
+        border:2px solid var(--ink);
+        cursor:pointer;
+        box-shadow:1px 1px 0 var(--ink);
+      }
+
+      .color-dot.active{
+        outline:2px solid var(--ink);
+        outline-offset:2px;
+      }
+
+      .sticker-row{
+        display:flex;
+        flex-wrap:wrap;
+        gap:6px;
+      }
+
+      .sticker{
+        border-radius:999px;
+        border:2px dashed var(--ink);
+        padding:3px 8px;
+        font-size:11px;
+        background:#fefce8;
+        cursor:pointer;
+        box-shadow:2px 2px 0 var(--ink);
+      }
+
+      .board{
+        flex:1;
+        border-radius:28px;
+        border:3px solid var(--ink);
+        background:var(--board);
+        box-shadow:6px 6px 0 var(--ink);
+        padding:12px;
+        display:flex;
+        flex-direction:column;
+        gap:8px;
+        transition:background .3s ease;
+      }
+
+      .canvas-wrap{
+        position:relative;
+        border-radius:20px;
+        border:2px dashed #e5e7eb;
+        overflow:hidden;
+        background:var(--paper);
+        background-image:radial-gradient(circle at 1px 1px,var(--paper-dot) 1px,transparent 0);
+        background-size:16px 16px;
+        transition:background .3s ease;
+      }
+
+      canvas{
+        width:100%;
+        height:420px;
+        touch-action:none;
+        display:block;
+        background:transparent;
+        cursor:crosshair;
+      }
+
+      @media(max-width:640px){
+        canvas{height:360px;}
+      }
+
+      .bottom-row{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:8px;
+        font-size:12px;
+        color:#4b5563;
+      }
+
+      .toast{
+        position:fixed;
+        left:50%;
+        bottom:18px;
+        transform:translateX(-50%);
+        padding:8px 14px;
+        border-radius:999px;
+        border:2px solid var(--ink);
+        background:#bbf7d0;
+        box-shadow:3px 3px 0 var(--ink);
+        font-size:12px;
+        display:none;
+        z-index:20;
+      }
+
+      #float-layer{
+        position:fixed;
+        inset:0;
+        pointer-events:none;
+        overflow:hidden;
+        z-index:-1;
+      }
+
+      .float-icon{
+        position:absolute;
+        font-size:16px;
+        opacity:.35;
+        filter:drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+        animation:floatMove linear infinite;
+      }
+
+      @keyframes floatMove{
+        0%{transform:translate3d(0,0,0);}
+        100%{transform:translate3d(var(--dx),var(--dy),0);}
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="tagline">Draw anything you want ✏️</div>
+        <div class="sub">No art skills required. Just draw.</div>
+      </header>
+
+      <section class="layout">
+        <!-- TOOLBOX -->
+        <aside class="toolbar">
+          <div>
+            <div class="section-title">Tool</div>
+            <div class="row">
+              <button id="toolPencil" class="btn active">✏️ Pencil</button>
+              <button id="toolEraser" class="btn">🧼 Eraser</button>
+              <button id="toolHeart" class="btn">❤️ Heart</button>
+              <button id="toolStar" class="btn">⭐ Star</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="section-title">Brush size</div>
+            <div class="row">
+              <input id="sizeSlider" class="slider" type="range" min="2" max="24" value="6" />
+              <span id="sizeLabel">6</span> px
+            </div>
+          </div>
+
+          <div>
+            <div class="section-title">Color</div>
+            <div class="row">
+              <div class="color-dot active" data-color="#111827" style="background:#111827;"></div>
+              <div class="color-dot" data-color="#f97316" style="background:#f97316;"></div>
+              <div class="color-dot" data-color="#ec4899" style="background:#ec4899;"></div>
+              <div class="color-dot" data-color="#22c55e" style="background:#22c55e;"></div>
+              <div class="color-dot" data-color="#0ea5e9" style="background:#0ea5e9;"></div>
+            </div>
+            <div class="row" style="margin-top:4px;">
+              <span style="font-size:11px;">Any color:</span>
+              <input id="colorPicker" type="color" value="#111827"
+                     style="width:34px;height:24px;border-radius:6px;border:2px solid var(--ink);padding:0;background:#fff;cursor:pointer;">
+            </div>
+          </div>
+
+          <div>
+            <div class="section-title">Template colors</div>
+            <div class="row">
+              <button class="btn theme-btn" data-theme="green">🌿 Green chill</button>
+              <button class="btn theme-btn" data-theme="purple">🌌 Purple night</button>
+              <button class="btn theme-btn" data-theme="pink">🍓 Pink candy</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="section-title">Canvas</div>
+            <div class="row">
+              <button id="btnClear" class="btn btn-pill">🧻 Clear</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="section-title">Save</div>
+            <button id="btnSave" class="btn">💾 Save doodle</button>
+          </div>
+
+          <div>
+            <div class="section-title">Stickers</div>
+            <div class="sticker-row">
+              <button class="sticker" data-sticker="Nice doodle 😄">Nice doodle 😄</button>
+              <button class="sticker" data-sticker="Looks fun!">Looks fun!</button>
+              <button class="sticker" data-sticker="Keep drawing!">Keep drawing!</button>
+            </div>
+          </div>
+        </aside>
+
+        <!-- BOARD -->
+        <section class="board" id="board">
+          <div class="canvas-wrap" id="canvasWrap">
+            <canvas id="pad"></canvas>
+          </div>
+          <div class="bottom-row">
+            <span id="statusText">Touch / click on the canvas and start doodling.</span>
+            <span>Green space · good vibes only 💚</span>
+          </div>
+        </section>
+      </section>
+    </div>
+
+    <div id="float-layer"></div>
+    <div id="toast" class="toast"></div>
+
+    <script>
+      const canvas = document.getElementById("pad");
+      const ctx = canvas.getContext("2d");
+
+      const toolPencil = document.getElementById("toolPencil");
+      const toolEraser = document.getElementById("toolEraser");
+      const toolHeart  = document.getElementById("toolHeart");
+      const toolStar   = document.getElementById("toolStar");
+      const sizeSlider = document.getElementById("sizeSlider");
+      const sizeLabel  = document.getElementById("sizeLabel");
+      const colorDots  = document.querySelectorAll(".color-dot");
+      const colorPicker= document.getElementById("colorPicker");
+      const btnClear   = document.getElementById("btnClear");
+      const btnSave    = document.getElementById("btnSave");
+      const statusText = document.getElementById("statusText");
+      const stickers   = document.querySelectorAll(".sticker");
+      const toast      = document.getElementById("toast");
+      const themeBtns  = document.querySelectorAll(".theme-btn");
+
+      let drawing     = false;
+      let currentTool = "pencil"; // pencil | eraser | heart | star
+      let brushColor  = "#111827";
+      let brushSize   = parseInt(sizeSlider.value,10);
+
+      function resizeCanvas(){
+        const rect = canvas.getBoundingClientRect();
+        const dpr  = window.devicePixelRatio || 1;
+        canvas.width  = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        ctx.lineCap  = "round";
+        ctx.lineJoin = "round";
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--paper") || "#fdfbf6";
+        ctx.fillRect(0,0,rect.width,rect.height);
+      }
+
+      function getPos(e){
+        const rect = canvas.getBoundingClientRect();
+        if(e.touches && e.touches[0]){
+          return {
+            x:e.touches[0].clientX - rect.left,
+            y:e.touches[0].clientY - rect.top
+          };
+        }
+        return {
+          x:e.clientX - rect.left,
+          y:e.clientY - rect.top
+        };
+      }
+
+      function setStroke(){
+        ctx.lineWidth   = brushSize;
+        ctx.strokeStyle = currentTool === "eraser" ? "#fdfbf6" : brushColor;
+      }
+
+      function startDraw(e){
+        e.preventDefault();
+        const p = getPos(e);
+        drawing = true;
+        if(currentTool === "heart" || currentTool === "star"){
+          stampShape(p.x,p.y);
+        }else{
+          ctx.beginPath();
+          ctx.moveTo(p.x,p.y);
+          setStroke();
+        }
+        statusText.textContent = randomLiveText();
+      }
+
+      function draw(e){
+        if(!drawing) return;
+        e.preventDefault();
+        const p = getPos(e);
+        if(currentTool === "heart" || currentTool === "star"){
+          stampShape(p.x,p.y);
+        }else{
+          setStroke();
+          ctx.lineTo(
+            p.x + (Math.random()-0.5)*0.5,
+            p.y + (Math.random()-0.5)*0.5
+          );
+          ctx.stroke();
+        }
+      }
+
+      function endDraw(){
+        if(!drawing) return;
+        drawing = false;
+        ctx.closePath();
+      }
+
+      function setTool(tool){
+        currentTool = tool;
+        [toolPencil,toolEraser,toolHeart,toolStar].forEach(b=>b.classList.remove("active"));
+        if(tool==="pencil") toolPencil.classList.add("active");
+        if(tool==="eraser") toolEraser.classList.add("active");
+        if(tool==="heart")  toolHeart.classList.add("active");
+        if(tool==="star")   toolStar.classList.add("active");
+      }
+
+      toolPencil.onclick = ()=>{
+        setTool("pencil");
+        statusText.textContent = "Pencil mode. Scribble anything.";
+      };
+      toolEraser.onclick = ()=>{
+        setTool("eraser");
+        statusText.textContent = "Eraser mode. Clean up a bit, or not.";
+      };
+      toolHeart.onclick = ()=>{
+        setTool("heart");
+        statusText.textContent = "Heart mode. Tap/drag to drop hearts.";
+      };
+      toolStar.onclick = ()=>{
+        setTool("star");
+        statusText.textContent = "Star mode. Fill the sky with stars.";
+      };
+
+      sizeSlider.oninput = ()=>{
+        brushSize = parseInt(sizeSlider.value,10);
+        sizeLabel.textContent = brushSize;
+      };
+
+      colorDots.forEach(dot=>{
+        dot.addEventListener("click",()=>{
+          colorDots.forEach(d=>d.classList.remove("active"));
+          dot.classList.add("active");
+          brushColor = dot.dataset.color;
+          colorPicker.value = brushColor;
+          setTool(currentTool === "eraser" ? "pencil" : currentTool);
+        });
+      });
+
+      colorPicker.oninput = ()=>{
+        brushColor = colorPicker.value;
+        colorDots.forEach(d=>d.classList.remove("active"));
+        setTool(currentTool === "eraser" ? "pencil" : currentTool);
+      };
+
+      btnClear.onclick = ()=>{
+        resizeCanvas();
+        showToast("Canvas cleared. New doodle time!");
+      };
+
+      btnSave.onclick = ()=>{
+        const link = document.createElement("a");
+        link.download = "doodle.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        showToast("Doodle saved as PNG!");
+      };
+
+      stickers.forEach(btn=>{
+        btn.addEventListener("click",()=>{
+          const text = btn.dataset.sticker;
+          statusText.textContent = text;
+          showToast(text);
+        });
+      });
+
+      function stampShape(x,y){
+        ctx.save();
+        ctx.font = (brushSize*2) + "px system-ui";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = brushColor;
+        const char = currentTool === "heart" ? "❤" : "★";
+        ctx.fillText(char,x,y);
+        ctx.restore();
+      }
+
+      function randomLiveText(){
+        const msgs = [
+          "Nice lines happening here.",
+          "This already looks fun.",
+          "No rules. Just scribble.",
+          "Messy = good.",
+          "Keep drawing, don’t think too much."
+        ];
+        return msgs[Math.floor(Math.random()*msgs.length)];
+      }
+
+      function showToast(msg){
+        toast.textContent = msg;
+        toast.style.display = "block";
+        setTimeout(()=>{ toast.style.display="none"; },1500);
+      }
+
+      const rootStyle = document.documentElement.style;
+      function applyTheme(name){
+        if(name==="green"){
+          rootStyle.setProperty("--bg-main","#bbf7d0");
+          rootStyle.setProperty("--bg-highlight1","rgba(255,255,255,0.7)");
+          rootStyle.setProperty("--bg-highlight2","rgba(255,255,255,0.7)");
+          rootStyle.setProperty("--board","#dcfce7");
+          rootStyle.setProperty("--paper","#fdfbf6");
+          rootStyle.setProperty("--paper-dot","#e5e7eb");
+        }else if(name==="purple"){
+          rootStyle.setProperty("--bg-main","#c4b5fd");
+          rootStyle.setProperty("--bg-highlight1","rgba(248,250,252,0.8)");
+          rootStyle.setProperty("--bg-highlight2","rgba(129,140,248,0.6)");
+          rootStyle.setProperty("--board","#a5b4fc");
+          rootStyle.setProperty("--paper","#f5f3ff");
+          rootStyle.setProperty("--paper-dot","#ddd6fe");
+        }else if(name==="pink"){
+          rootStyle.setProperty("--bg-main","#fecaca");
+          rootStyle.setProperty("--bg-highlight1","rgba(254,249,195,0.8)");
+          rootStyle.setProperty("--bg-highlight2","rgba(248,250,252,0.8)");
+          rootStyle.setProperty("--board","#fed7e2");
+          rootStyle.setProperty("--paper","#fff1f2");
+          rootStyle.setProperty("--paper-dot","#fecdd3");
+        }
+        themeBtns.forEach(b=>b.classList.remove("active"));
+        themeBtns.forEach(b=>{
+          if(b.dataset.theme===name) b.classList.add("active");
+        });
+        showToast("Template colors switched.");
+      }
+
+      themeBtns.forEach(btn=>{
+        btn.addEventListener("click",()=>{
+          applyTheme(btn.dataset.theme);
+        });
+      });
+
+      canvas.addEventListener("mousedown",startDraw);
+      canvas.addEventListener("mousemove",draw);
+      window.addEventListener("mouseup",endDraw);
+
+      canvas.addEventListener("touchstart",startDraw,{passive:false});
+      canvas.addEventListener("touchmove",draw,{passive:false});
+      canvas.addEventListener("touchend",endDraw);
+
+      window.addEventListener("resize",resizeCanvas);
+      resizeCanvas();
+
+      const floatLayer = document.getElementById("float-layer");
+      function createFloatingIcon(char,color){
+        const span = document.createElement("span");
+        span.className = "float-icon";
+        span.textContent = char;
+        span.style.color = color;
+        span.style.left = (Math.random()*100) + "vw";
+        span.style.top  = (Math.random()*100) + "vh";
+        span.style.setProperty("--dx",(Math.random()*40-20) + "vw");
+        span.style.setProperty("--dy",(Math.random()*40-20) + "vh");
+        span.style.animationDuration = (12 + Math.random()*10) + "s";
+        span.addEventListener("animationiteration",()=>{
+          span.style.setProperty("--dx",(Math.random()*40-20) + "vw");
+          span.style.setProperty("--dy",(Math.random()*40-20) + "vh");
+        });
+        floatLayer.appendChild(span);
+      }
+
+      const icons = [
+        {char:"❤",color:"#f97316"},
+        {char:"★",color:"#0f172a"},
+        {char:"➜",color:"#1d4ed8"}
+      ];
+      for(let i=0;i<12;i++){
+        const obj = icons[i % icons.length];
+        createFloatingIcon(obj.char,obj.color);
+      }
+    </script>
+  </body>
+</html>
