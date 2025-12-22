@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Diary Entry</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+
+    :root{
+      --paper:#fdfbf6;
+      --paper-dot:#e5e7eb;
+      --ink:#111827;
+      --bg-main:#f9a8d4;
+      --bg-highlight1:rgba(255,255,255,0.8);
+      --bg-highlight2:rgba(255,255,255,0.75);
+    }
+
+    body{
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:stretch;
+      font-family:"Patrick Hand","Plus Jakarta Sans",system-ui,sans-serif;
+      background:
+        radial-gradient(circle at 10% 10%,var(--bg-highlight1) 0,transparent 45%),
+        radial-gradient(circle at 80% 0%,var(--bg-highlight2) 0,transparent 45%),
+        var(--bg-main);
+      color:#0f172a;
+      transition:background .4s ease;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.25;
+      background-image:
+        radial-gradient(circle at 15% 20%,#fb7185 0 2px,transparent 3px),
+        radial-gradient(circle at 70% 30%,#facc15 0 2px,transparent 3px),
+        radial-gradient(circle at 30% 75%,#22c55e 0 2px,transparent 3px),
+        radial-gradient(circle at 85% 70%,#0ea5e9 0 2px,transparent 3px);
+      background-size:220px 220px,260px 260px,240px 240px,260px 260px;
+      z-index:-1;
+    }
+
+    .page{
+      width:100%;
+      max-width:1024px;
+      padding:16px 12px 24px;
+      margin:0 auto;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      position:relative;
+    }
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+    }
+
+    .title-main{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .title-text{
+      font-size:26px;
+      font-weight:600;
+    }
+    .sub{
+      font-size:13px;
+      color:#374151;
+    }
+
+    .title-decor span{
+      font-size:20px;
+      text-shadow:0 2px 0 rgba(15,23,42,0.3);
+      animation:floatY 3s ease-in-out infinite;
+    }
+    .heart1{color:#fb7185;animation-delay:0s;}
+    .star1{color:#facc15;animation-delay:.4s;}
+    .heart2{color:#ec4899;animation-delay:.8s;}
+
+    .layout{
+      margin-top:12px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    @media(min-width:880px){
+      .layout{flex-direction:row;align-items:stretch;}
+    }
+
+    .left{
+      flex:1.2;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .toolbar{
+      border-radius:24px;
+      border:2px solid var(--ink);
+      background:#fee2f2;
+      box-shadow:4px 4px 0 var(--ink);
+      padding:10px 12px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      font-size:13px;
+      align-items:center;
+    }
+
+    .tool-btn{
+      border-radius:999px;
+      border:2px solid var(--ink);
+      background:#fefce8;
+      padding:4px 9px;
+      font-size:12px;
+      cursor:pointer;
+      box-shadow:2px 2px 0 var(--ink);
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+    }
+    .tool-btn:active{
+      transform:translate(1px,1px);
+      box-shadow:0 0 0 var(--ink);
+      background:#fef3c7;
+    }
+
+    .label-small{
+      font-size:11px;
+      color:#4b5563;
+      margin:0 4px;
+    }
+
+    .color-dot{
+      width:20px;
+      height:20px;
+      border-radius:999px;
+      border:2px solid var(--ink);
+      cursor:pointer;
+      box-shadow:1px 1px 0 var(--ink);
+    }
+    .color-dot:active{
+      transform:scale(0.95);
+    }
+
+    .paper-wrap{
+      border-radius:24px;
+      border:3px solid var(--ink);
+      background:#fee2f2;
+      box-shadow:6px 6px 0 var(--ink);
+      padding:10px;
+      transition:background .3s ease;
+    }
+
+    .paper{
+      position:relative;
+      border-radius:18px;
+      border:2px dashed #e5e7eb;
+      background:var(--paper);
+      background-image:radial-gradient(circle at 1px 1px,var(--paper-dot) 1px,transparent 0);
+      background-size:18px 18px;
+      min-height:280px;
+      padding:14px 14px 40px;
+      font-size:15px;
+      line-height:1.7;
+      outline:none;
+      white-space:pre-wrap;
+    }
+    .paper:empty:before{
+      content:"today i want to talk about…";
+      color:#9ca3af;
+    }
+    .paper::selection{background:rgba(244,114,182,0.35);}
+
+    .paper-footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:6px;
+      font-size:11px;
+      color:#6b7280;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+
+    .chip{
+      padding:3px 8px;
+      border-radius:999px;
+      border:2px solid var(--ink);
+      background:#fff;
+      cursor:pointer;
+      font-size:11px;
+      box-shadow:2px 2px 0 var(--ink);
+    }
+    .chip.active{
+      background:#0f172a;
+      color:#f9fafb;
+    }
+
+    .save-btn{
+      padding:4px 10px;
+      border-radius:999px;
+      border:2px solid var(--ink);
+      background:#bbf7d0;
+      cursor:pointer;
+      font-size:11px;
+      box-shadow:2px 2px 0 var(--ink);
+      font-weight:600;
+    }
+    .save-btn:active{
+      transform:translate(1px,1px);
+      box-shadow:0 0 0 var(--ink);
+    }
+
+    .right{
+      flex:0.9;
+      border-radius:24px;
+      border:2px solid var(--ink);
+      padding:10px 12px 12px;
+      background:linear-gradient(180deg,#fee2f2,#fef3c7);
+      box-shadow:4px 4px 0 var(--ink);
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      font-size:13px;
+    }
+    .side-title{font-size:13px;font-weight:600;}
+
+    .mood-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:6px;
+      margin-top:4px;
+    }
+    .mood-btn{
+      border-radius:16px;
+      border:2px solid var(--ink);
+      background:rgba(255,255,255,0.9);
+      padding:4px 3px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:1px;
+      cursor:pointer;
+      font-size:11px;
+    }
+    .mood-btn span:first-child{font-size:15px;}
+    .mood-btn.active{
+      background:#0f172a;
+      color:#f9fafb;
+    }
+
+    .side-note{font-size:11px;color:#4b5563;line-height:1.5;}
+
+    @keyframes floatY{
+      0%,100%{transform:translateY(0);}
+      50%{transform:translateY(-4px);}
+    }
+
+    @media(max-width:860px){
+      .page{padding:14px 10px 20px;}
+      .layout{flex-direction:column;}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="title-main">
+        <span class="title-text">Diary entry</span>
+        <p class="sub">Write exactly how your brain talks. Highlight lines, change colors, keep it chaotic.</p>
+      </div>
+      <div class="title-decor">
+        <span class="heart1">♥</span>
+        <span class="star1">★</span>
+        <span class="heart2">♥</span>
+      </div>
+    </header>
+
+    <section class="layout">
+      <!-- left -->
+      <div class="left">
+        <div class="toolbar">
+          <button type="button" class="tool-btn" data-cmd="bold"><span style="font-weight:700;">B</span></button>
+          <button type="button" class="tool-btn" data-cmd="italic"><span style="font-style:italic;">i</span></button>
+          <button type="button" class="tool-btn" data-cmd="underline"><span style="text-decoration:underline;">U</span></button>
+
+          <span class="label-small">Text</span>
+          <div class="color-dot" data-color="#111827" style="background:#111827;"></div>
+          <div class="color-dot" data-color="#fb7185" style="background:#fb7185;"></div>
+          <div class="color-dot" data-color="#0ea5e9" style="background:#0ea5e9;"></div>
+          <div class="color-dot" data-color="#22c55e" style="background:#22c55e;"></div>
+
+          <span class="label-small">Highlight</span>
+          <div class="color-dot" data-hl="#fef08a" style="background:#fef08a;"></div>
+          <div class="color-dot" data-hl="#fed7e2" style="background:#fed7e2;"></div>
+          <div class="color-dot" data-hl="#bfdbfe" style="background:#bfdbfe;"></div>
+        </div>
+
+        <div class="paper-wrap" id="paperWrap">
+          <div id="paper" class="paper" contenteditable="true"></div>
+          <div class="paper-footer">
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+              <span>Tag:</span>
+              <button type="button" class="chip" data-tag="school">school</button>
+              <button type="button" class="chip" data-tag="family">family</button>
+              <button type="button" class="chip" data-tag="health">health</button>
+            </div>
+            <button type="button" class="save-btn" id="saveBtn">💾 Save</button>
+            <span id="charCount">0 chars</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- right -->
+      <aside class="right">
+        <div>
+          <div class="side-title">today's mood bubble</div>
+          <div class="mood-grid">
+            <button type="button" class="mood-btn" data-mood="calm">
+              <span>🌿</span><span>calm</span>
+            </button>
+            <button type="button" class="mood-btn" data-mood="happy">
+              <span>🌈</span><span>bright</span>
+            </button>
+            <button type="button" class="mood-btn" data-mood="tired">
+              <span>😴</span><span>tired</span>
+            </button>
+            <button type="button" class="mood-btn" data-mood="anxious">
+              <span>💭</span><span>spinning</span>
+            </button>
+            <button type="button" class="mood-btn" data-mood="sad">
+              <span>🌧️</span><span>heavy</span>
+            </button>
+            <button type="button" class="mood-btn" data-mood="proud">
+              <span>🏅</span><span>proud</span>
+            </button>
+          </div>
+        </div>
+
+        <p class="side-note" id="moodHint">
+          Pick one bubble and start with one sentence: "today, the main thing on my mind is…"
+        </p>
+      </aside>
+    </section>
+  </div>
+
+  <script>
+    const paper = document.getElementById('paper');
+    const charCount = document.getElementById('charCount');
+    const paperWrap = document.getElementById('paperWrap');
+    const saveBtn = document.getElementById('saveBtn');
+
+    // track lasst highlight 
+    let lastHighlightColor = null;
+
+    // Bold / Italic / Underline
+    document.querySelectorAll('.tool-btn[data-cmd]').forEach(btn=>{
+      btn.addEventListener('mousedown', e => {
+        e.preventDefault();
+      });
+      btn.addEventListener('click',()=>{
+        const cmd = btn.dataset.cmd;
+        document.execCommand(cmd, false, null);
+        paper.focus();
+      });
+    });
+
+    // Text color
+    document.querySelectorAll('.color-dot[data-color]').forEach(dot=>{
+      dot.addEventListener('mousedown', e => {
+        e.preventDefault();
+      });
+      dot.addEventListener('click',()=>{
+        const color = dot.dataset.color;
+        document.execCommand('foreColor', false, color);
+        paper.focus();
+      });
+    });
+
+    // Highlight color 
+    document.querySelectorAll('.color-dot[data-hl]').forEach(dot=>{
+      dot.addEventListener('mousedown', e => {
+        e.preventDefault();
+      });
+      dot.addEventListener('click',()=>{
+        const color = dot.dataset.hl;
+        
+        // double highlisht 
+        if(lastHighlightColor === color){
+          document.execCommand('hiliteColor', false, 'transparent'); // Remove highlight [web:280]
+          lastHighlightColor = null;
+        } else {
+          document.execCommand('hiliteColor', false, color); // Apply highlight
+          lastHighlightColor = color;
+        }
+        paper.focus();
+      });
+    });
+
+    // Character counter
+    paper.addEventListener('input',()=>{
+      const len = (paper.innerText || '').trim().length;
+      charCount.textContent = len + ' chars';
+    });
+
+    // Tag chips
+    document.querySelectorAll('.chip').forEach(chip=>{
+      chip.addEventListener('click',()=>{
+        document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+        chip.classList.add('active');
+      });
+    });
+
+    // Save button
+    saveBtn.addEventListener('click', () => {
+      const content = paper.innerText || '';
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      const today = new Date().toISOString().split('T')[0];
+      a.download = `diary_${today}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // Mood buttons
+    const moodHint = document.getElementById('moodHint');
+    const moodTexts = {
+      calm:"Write about one thing that felt steady or safe today, even if it was tiny.",
+      happy:"Describe the good moment like a screenshot so future‑you can re‑read it.",
+      tired:"List what drained you today. Bullet style is totally fine.",
+      anxious:"Dump every worry, then underline only the ones you can actually do something about.",
+      sad:"Let this page hold whatever you don't want to say out loud yet.",
+      proud:"Write what you did and why it secretly matters to you."
+    };
+
+    document.querySelectorAll('.mood-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const mood = btn.dataset.mood;
+        moodHint.textContent = moodTexts[mood] || moodHint.textContent;
+
+        const bgMap = {
+          calm:"#e0f2fe",
+          happy:"#fef3c7",
+          tired:"#f1f5f9",
+          anxious:"#fee2e2",
+          sad:"#e5e7eb",
+          proud:"#d1fae5"
+        };
+        const newBg = bgMap[mood];
+        if(newBg){
+          paperWrap.style.backgroundColor = newBg;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
