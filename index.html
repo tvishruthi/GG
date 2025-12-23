@@ -1,307 +1,574 @@
-# 🌿 Grateful & Grounded (G&G)
-
-> **A holistic mental wellness web application designed to help you become the grateful, grounded version you are meant to be.**
-
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Status](https://img.shields.io/badge/status-active-success.svg)
-
----
-
-## 📖 Table of Contents
-
-- [About](#about)
-- [Live Demo](#live-demo)
-- [Features](#features)
-- [Screenshots](#screenshots)
-- [Tech Stack](#tech-stack)
-- [File Structure](#file-structure)
-- [Pages Overview](#pages-overview)
-- [Contributing](#contributing)
-- [License](#license)
-
----
-
-## 🌱 About
-
-**Grateful & Grounded (G&G)** is a creative mental health support platform that provides a safe, judgment-free space for self-expression, mindfulness, and personal growth. Built with compassion and accessibility in mind, G&G offers multiple interactive tools—from journaling and affirmations to doodling and chatbot support—to help users navigate their mental wellness journey.
-
-This project is designed for students, young adults, and anyone seeking a gentle companion for daily mental health practices.
-
----
-
-## 🚀 Live Demo
-
-**🔗 [https://gg-murex.vercel.app/](https://gg-murex.vercel.app/)**
-
-Experience the app live! No installation required—just click the link and start exploring your mental wellness journey.
-
----
-
-## ✨ Features
-
-### 🎯 Core Features
-
-- **Interactive Dashboard**: Glassmorphic design with parallax effects and animated connections between features
-- **Gratitude Journaling**: Social feed-style journal with color customization and mood tracking
-- **Daily Affirmations**: Create, customize, and save personalized affirmations with beautiful backgrounds
-- **Creative Doodle Board**: Digital canvas with multiple brush tools, color themes, and download functionality
-- **Mental Health Chatbot**: Gentle, non-judgmental support chatbot for venting and conversation
-- **Diary Entry Tool**: Rich text editor with mood bubbles, highlighting, and text formatting
-- **Skills Arcade**: Curated collection of mental wellness games (Tetris, Wordle, Minesweeper, etc.)
-- **User Profile System**: Personalized experience with demo profile storage
-
-### 🔐 Privacy & Safety
-
-- **Client-side storage**: All personal data stays in your browser
-- **Crisis resources**: National suicide hotline (988) prominently displayed
-- **No judgment zone**: Designed to be a safe space for authentic expression
-
----
-
-## 📸 Screenshots
-
-> **Note**: Add screenshots of your app here once deployed!
-
-```
-/screenshots
-├── dashboard.png
-├── journal.png
-├── affirmations.png
-├── doodle.png
-├── ai-chat.png
-├── diary.png
-├── games.png
-```
-
----
-
-## 🛠️ Tech Stack
-
-### Frontend
-
-- **HTML5** - Semantic structure
-- **CSS3** - Custom animations, glassmorphism effects
-- **JavaScript (Vanilla)** - Interactive functionality
-- **Tailwind CSS** - Utility-first styling
-- **Lucide Icons** - Beautiful, consistent iconography
-
-### Fonts
-
-- **Plus Jakarta Sans** - Modern sans-serif
-- **Playfair Display** - Elegant serif headers
-- **Patrick Hand** - Handwritten style for journaling
-- **Kalam** - Casual handwritten font
-- **Press Start 2P** - Retro pixel font for arcade
-
-### Deployment
-
-- **Vercel** - Fast, reliable hosting with automatic deployments
-
----
-
-## 📁 File Structure
-
-```
-grateful-and-grounded/
-│
-├── index.html          # Main dashboard with glassmorphic UI
-├── journal.html        # Social-style gratitude journal
-├── affirm.html         # Daily affirmations creator
-├── doodle.html         # Interactive doodle canvas
-├── ai-chat.html        # Mental health chatbot interface
-├── diary.html          # Rich text diary entry tool
-├── games.html          # Arcade page with curated games
-│
-├── README.md           # Project documentation (you are here!)
-├── LICENSE             # MIT License
-│
-└── screenshots/        # (Optional) App screenshots
-```
-
----
-
-## 📄 Pages Overview
-
-### 1. **Dashboard (`index.html`)** 🏠
-
-The central hub featuring:
-- Animated cat icon at center
-- 6 interconnected feature nodes with parallax effect
-- Glassmorphic design with gradient background
-- Profile panel with demo user info
-- Responsive navigation
-
-**Key Interactions**:
-- Click center cat → Profile opens + all lines glow
-- Hover feature nodes → Line lights up with unique color
-- Click feature nodes → Navigate to respective pages
-
----
-
-### 2. **Journal (`journal.html`)** 📖
-
-A social-feed style gratitude journal where users can:
-- Write and post colorful notes with customizable backgrounds
-- Filter posts by "Social", "Friends", or "My Posts"
-- Like and comment on entries
-- View posts in a Pinterest-style masonry layout
-
-**Customization**:
-- 6 color themes (Yellow, Blue, Pink, Green, Purple, White)
-- "Big text" mode for impactful statements
-- Auto-rotation for natural paper note effect
-
----
-
-### 3. **Affirmations (`affirm.html`)** ✨
-
-Daily affirmations board with:
-- Pre-loaded inspirational affirmations
-- "Write It" modal to create custom affirmations
-- Background customization (solids, gradients, nature photos)
-- Like ❤️ and Save 🔖 functionality
-- Feed, Liked, and Saved tabs
-
-**Features**:
-- Dark/light text auto-adjustment based on background
-- Floating particle effects
-- Responsive masonry grid layout
-
----
-
-### 4. **Doodle (`doodle.html`)** 🎨
-
-Creative canvas for free expression:
-- **Tools**: Pencil, Eraser, Heart stamp, Star stamp
-- **Brush size**: 2px - 24px adjustable slider
-- **Colors**: 5 preset colors + custom color picker
-- **Themes**: Green Chill, Purple Night, Pink Candy
-- **Actions**: Clear canvas, Save as PNG
-- **Encouragement stickers**: "Nice doodle 😄", "Keep drawing!"
-
----
-
-### 5. **Chatbot (`ai-chat.html`)** 💬
-
-Mental health support chatbot featuring:
-- Animated cat scene with breathing effects
-- Chat modal with message history
-- Local storage for conversation persistence
-- "Previous Chats" feature
-- Gentle, supportive responses
-
-**Safety Note**: Includes disclaimer that it's not a replacement for professional help.
-
----
-
-### 6. **Diary Entry (`diary.html`)** 📝
-
-Rich text diary with:
-- **Formatting tools**: Bold, Italic, Underline
-- **Text colors**: Black, Pink, Blue, Green
-- **Highlights**: Yellow, Pink, Blue (double-click to toggle)
-- **Mood bubbles**: Calm, Happy, Tired, Anxious, Sad, Proud
-- **Tags**: School, Family, Health
-- **Save as .txt** file
-
-**Mood-based backgrounds**: Changes canvas color based on selected mood.
-
----
-
-### 7. **Games Arcade (`games.html`)** 🎮
-
-Curated collection of mental wellness games:
-- **Tic Tac Toe** (Poki)
-- **Minesweeper** (Google)
-- **Wordle** (NYT)
-- **Tetris** (Official)
-- **Cool Math Games** (Logic puzzles)
-- **Bored Button** (Random fun)
-
-**Design**: Retro pixel art aesthetic with snowfall animation and starfield background.
-
----
-
-## 🤝 Contributing
-
-We welcome contributions from the community! Here's how you can help:
-
-1. **Fork the repository**
-2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
-3. **Commit your changes**: `git commit -m 'Add amazing feature'`
-4. **Push to branch**: `git push origin feature/amazing-feature`
-5. **Open a Pull Request**
-
-### Contribution Ideas
-
-- [ ] Add dark mode toggle
-- [ ] Create mobile app version
-- [ ] Add meditation timer feature
-- [ ] Multilingual support
-- [ ] Accessibility improvements (ARIA labels, screen reader support)
-- [ ] More customization options
-
----
-
-## 📜 License
-
-This project is licensed under the **MIT License**.
-
-```
-MIT License
-
-Copyright (c) 2025 Vishruthi
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
----
-
-## 🙏 Acknowledgments
-
-- **Tailwind CSS** for the utility-first styling framework
-- **Lucide Icons** for beautiful, consistent iconography
-- **Google Fonts** for typography
-- **Unsplash** for nature background images
-- **Vercel** for seamless deployment and hosting
-- **Mental health community** for inspiration and guidance
-
----
-
-## 🌟 Future Ideas
-
-- [ ] User authentication system
-- [ ] Cloud sync across devices
-- [ ] Push notifications for daily reminders
-- [ ] Community features
-- [ ] Analytics dashboard
-- [ ] Export data options
-- [ ] Offline mode (PWA support)
-
----
-
-<div align="center">
-
-### 💚 Made with love for mental wellness
-
-**Try it now: [https://gg-murex.vercel.app/](https://gg-murex.vercel.app/)**
-
-**If this project helps you, consider giving it a ⭐ on GitHub!**
-
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<!-- G&G -->
+<!-- created by vishruthi -->
+<head>
+  <meta charset="UTF-8">
+  <title>G&G – Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+
+  <style>
+    body { overflow: hidden; }
+
+    .noise {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.08;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    .glass-box {
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1.5px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.12),
+                  0 2px 8px rgba(255, 255, 255, 0.6) inset;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+    .glass-box:hover {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 12px 48px rgba(31, 38, 135, 0.18),
+                  0 4px 12px rgba(255, 255, 255, 0.8) inset;
+      z-index: 50;
+    }
+
+    .connector {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      opacity: 0.3;
+      transition: all 0.5s ease;
+    }
+    .connector.on {
+      stroke-width: 3;
+      opacity: 1;
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+
+    .g-red    { stroke:#ef4444 !important; filter:drop-shadow(0 0 8px #ef4444); }
+    .g-yellow { stroke:#eab308 !important; filter:drop-shadow(0 0 8px #eab308); }
+    .g-pink   { stroke:#f472b6 !important; filter:drop-shadow(0 0 8px #f472b6); }
+    .g-green  { stroke:#10b981 !important; filter:drop-shadow(0 0 8px #10b981); }
+    .g-purple { stroke:#8b5cf6 !important; filter:drop-shadow(0 0 8px #8b5cf6); }
+    .g-blue   { stroke:#3b82f6 !important; filter:drop-shadow(0 0 8px #3b82f6); }
+
+    .ripple {
+      position:absolute;width:100%;height:100%;border-radius:50%;
+      background:rgba(255,255,255,0.8);transform:scale(1);opacity:0;pointer-events:none;
+    }
+    .ripple.pop { animation:pop .6s linear; }
+
+    @keyframes pop{
+      0%{transform:scale(1);opacity:.6;}
+      100%{transform:scale(3);opacity:0;}
+    }
+
+    /* profile */
+    .profile-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,0.35);
+      display:none;
+      align-items:stretch;
+      justify-content:flex-end;
+      z-index:60;
+    }
+    .profile-backdrop.show{display:flex;}
+
+    .profile-panel{
+      width:320px;
+      max-width:100%;
+      background:#f9fafb;
+      border-radius:24px 0 0 24px;
+      padding:20px 20px 22px;
+      box-shadow:-12px 0 30px rgba(15,23,42,0.3);
+      transform:translateX(100%);
+      animation:slideIn .4s ease-out forwards;
+      font-family:"Plus Jakarta Sans",system-ui,sans-serif;
+    }
+
+    @keyframes slideIn{
+      from{transform:translateX(100%);}
+      to{transform:translateX(0);}
+    }
+
+    .profile-close{
+      border:none;
+      background:#e5e7eb;
+      border-radius:999px;
+      width:26px;
+      height:26px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      float:right;
+    }
+
+    .profile-avatar{
+      margin-top:4px;
+      margin-bottom:10px;
+      display:flex;
+      justify-content:center;
+    }
+    .avatar-circle{
+      width:72px;
+      height:72px;
+      border-radius:999px;
+      background:radial-gradient(circle at 30% 30%,#fee2f2,#bfdbfe);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 10px 20px rgba(15,23,42,0.25);
+    }
+
+    .profile-title{
+      font-size:1.25rem;
+      font-weight:700;
+      text-align:center;
+      color:#111827;
+    }
+    .profile-sub{
+      font-size:0.82rem;
+      color:#6b7280;
+      text-align:center;
+      margin-top:6px;
+    }
+
+    .profile-fields{
+      margin-top:14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .pf-field label{
+      font-size:0.78rem;
+      color:#4b5563;
+      display:block;
+      margin-bottom:3px;
+    }
+    .pf-field input{
+      width:100%;
+      border-radius:999px;
+      border:1px solid #d1d5db;
+      padding:7px 11px;
+      font-size:0.86rem;
+      background:#ffffff;
+      outline:none;
+    }
+    .pf-field input:focus{
+      border-color:#94a3b8;
+      box-shadow:0 0 0 3px rgba(148,163,184,0.25);
+    }
+
+    .profile-note{
+      margin-top:10px;
+      font-size:0.78rem;
+      color:#6b7280;
+    }
+  </style>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        fontFamily: {
+          sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          serif: ['"Playfair Display"', 'serif']
+        },
+        extend: {
+          animation: {
+            'bg-cycle':'bgCycle 15s ease-in-out infinite',
+            'draw':'dash 1.5s ease-out forwards',
+            'float':'floatY 5s ease-in-out infinite',
+          },
+          keyframes: {
+            bgCycle:{
+              '0%,100%':{background:'#dbeafe'},
+              '25%':{background:'#e0e7ff'},
+              '50%':{background:'#f3e8ff'},
+              '75%':{background:'#fae8ff'}
+            },
+            dash:{'to':{'stroke-dashoffset':'0'}},
+            floatY:{
+              '0%,100%':{transform:'translateY(0)'},
+              '50%':{transform:'translateY(-8px)'}
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="min-h-screen w-full relative flex flex-col items-center justify-center text-slate-800 animate-bg-cycle">
+
+  <div class="noise"></div>
+
+  <header class="fixed top-0 w-full p-6 flex justify-between items-center z-50">
+    <div class="glass-box px-8 py-3 rounded-full flex items-center gap-3 cursor-default">
+      <div class="flex flex-col leading-none">
+        <span class="font-serif font-bold text-xl text-slate-900 tracking-wide">Greatful</span>
+        <span class="font-sans text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] text-center">&amp; Grounded</span>
+      </div>
+    </div>
+
+    <nav class="hidden md:flex gap-4 items-center">
+      <a href="#" class="px-5 py-2.5 rounded-full hover:bg-white/50 transition-colors text-sm font-semibold text-slate-700 tracking-wide">About</a>
+      <a href="contact.html" class="px-5 py-2.5 rounded-full hover:bg-white/50 transition-colors text-sm font-semibold text-slate-700 tracking-wide">Contact</a>
+
+      <!-- header -->
+      <button id="profileChip" class="ml-2 flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 hover:bg-white shadow-sm text-xs font-semibold text-slate-700">
+        <span class="w-6 h-6 rounded-full bg-gradient-to-br from-pink-200 to-indigo-200 flex items-center justify-center">
+          <i data-lucide="cat" class="w-4 h-4 text-slate-700"></i>
+        </span>
+        <span id="profileChipName">Soft Cat</span>
+      </button>
+    </nav>
+  </header>
+
+  <main class="relative w-full max-w-[900px] h-[650px] flex items-center justify-center hidden md:flex">
+    <!-- Lines -->
+    <svg class="absolute inset-0 w-full h-full pointer-events-none z-0">
+      <line id="l-1" x1="450" y1="325" x2="450" y2="120" stroke="#94a3b8" stroke-width="2" class="connector animate-draw" />
+      <line id="l-2" x1="450" y1="325" x2="230" y2="180" stroke="#94a3b8" stroke-width="2" class="connector animate-draw" style="animation-delay:.1s" />
+      <line id="l-3" x1="450" y1="325" x2="670" y2="180" stroke="#94a3b8" stroke-width="2" class="connector animate-draw" style="animation-delay:.2s" />
+      <line id="l-4" x1="450" y1="325" x2="230" y2="470" stroke="#94a3b8" stroke-width="2" class="connector animate-draw" style="animation-delay:.3s" />
+      <line id="l-5" x1="450" y1="325" x2="450" y2="550" stroke="#94a3b8" stroke-width="2" class="connector animate-draw" style="animation-delay:.4s" />
+      <line id="l-6" x1="450" y1="325" x2="670" y2="470" stroke="#94a3b8" stroke-width="2" class="connector animate-draw" style="animation-delay:.5s" />
+    </svg>
+
+    <!-- Center Cat -->
+    <div class="absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 parallax-wrap tilt-box" data-s="2">
+      <div class="relative group" id="centerCat">
+        <div class="absolute -inset-8 bg-white/40 rounded-full blur-2xl opacity-60 animate-pulse"></div>
+        <div id="cat-fx" class="ripple"></div>
+        <div class="w-32 h-32 rounded-full glass-box flex items-center justify-center relative z-10 border-2 border-white/80 active:scale-95 transition-transform">
+          <i data-lucide="cat" class="w-14 h-14 text-slate-800 transition-transform duration-500 group-hover:rotate-12"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. Journal -->
+    <div
+      class="absolute top-[120px] left-[450px] -translate-x-1/2 -translate-y-1/2 z-10 parallax-wrap"
+      data-s="4"
+      data-link="journal.html"
+      onmouseenter="hoverLine('l-1','g-red',1)"
+      onmouseleave="hoverLine('l-1','g-red',0)"
+    >
+      <div class="glass-box w-28 h-28 rounded-full flex flex-col items-center justify-center gap-1.5 animate-float tilt-box group">
+        <div class="p-2.5 bg-red-100/80 rounded-full group-hover:bg-red-200/90 transition-colors">
+          <i data-lucide="book" class="w-6 h-6 text-red-600"></i>
+        </div>
+        <span class="text-sm font-bold text-slate-700">Journal</span>
+      </div>
+    </div>
+
+    <!-- 2. Affirmations -->
+    <div
+      class="absolute top-[180px] left-[230px] -translate-x-1/2 -translate-y-1/2 z-10 parallax-wrap"
+      data-s="3"
+      data-link="affirm.html"
+      onmouseenter="hoverLine('l-2','g-yellow',1)"
+      onmouseleave="hoverLine('l-2','g-yellow',0)"
+    >
+      <div class="glass-box w-28 h-28 rounded-full flex flex-col items-center justify-center gap-1.5 animate-float tilt-box group" style="animation-delay:1s">
+        <div class="p-2.5 bg-yellow-100/80 rounded-full group-hover:bg-yellow-200/90 transition-colors">
+          <i data-lucide="heart-handshake" class="w-6 h-6 text-yellow-600"></i>
+        </div>
+        <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Affirmations</span>
+      </div>
+    </div>
+
+    <!-- 3. Doodle -->
+    <div
+      class="absolute top-[180px] left-[670px] -translate-x-1/2 -translate-y-1/2 z-10 parallax-wrap"
+      data-s="5"
+      data-link="doodle.html"
+      onmouseenter="hoverLine('l-3','g-pink',1)"
+      onmouseleave="hoverLine('l-3','g-pink',0)"
+    >
+      <div class="glass-box w-28 h-28 rounded-full flex flex-col items-center justify-center gap-1.5 animate-float tilt-box group" style="animation-delay:2s">
+        <div class="p-2.5 bg-pink-100/80 rounded-full group-hover:bg-pink-200/90 transition-colors">
+          <i data-lucide="pen-tool" class="w-6 h-6 text-pink-600"></i>
+        </div>
+        <span class="text-sm font-bold text-slate-700">Doodle</span>
+      </div>
+    </div>
+
+    <!-- 4. AI Chatbox -->
+    <div
+      class="absolute top-[470px] left-[230px] -translate-x-1/2 -translate-y-1/2 z-10 parallax-wrap"
+      data-s="4"
+      data-link="ai-chat.html"
+      onmouseenter="hoverLine('l-4','g-green',1)"
+      onmouseleave="hoverLine('l-4','g-green',0)"
+    >
+      <div class="glass-box w-28 h-28 rounded-full flex flex-col items-center justify-center gap-1.5 animate-float tilt-box group" style="animation-delay:3s">
+        <div class="p-2.5 bg-emerald-100/80 rounded-full group-hover:bg-emerald-200/90 transition-colors">
+          <i data-lucide="message-square" class="w-6 h-6 text-emerald-600"></i>
+        </div>
+        <span class="text-[11px] font-bold text-slate-700 text-center leading-tight">AI<br>Chatbox</span>
+      </div>
+    </div>
+
+    <!-- 5. Games -->
+    <div
+      class="absolute top-[550px] left-[450px] -translate-x-1/2 -translate-y-1/2 z-10 parallax-wrap"
+      data-s="2"
+      data-link="games.html"
+      onmouseenter="hoverLine('l-5','g-purple',1)"
+      onmouseleave="hoverLine('l-5','g-purple',0)"
+    >
+      <div class="glass-box w-28 h-28 rounded-full flex flex-col items-center justify-center gap-1.5 animate-float tilt-box group" style="animation-delay:1s">
+        <div class="p-2.5 bg-purple-100/80 rounded-full group-hover:bg-purple-200/90 transition-colors">
+          <i data-lucide="gamepad-2" class="w-6 h-6 text-purple-600"></i>
+        </div>
+        <span class="text-sm font-bold text-slate-700">Games</span>
+      </div>
+    </div>
+
+    <!-- 6. Diary Entry -->
+    <div
+      class="absolute top-[470px] left-[670px] -translate-x-1/2 -translate-y-1/2 z-10 parallax-wrap"
+      data-s="6"
+      data-link="diary.html"
+      onmouseenter="hoverLine('l-6','g-blue',1)"
+      onmouseleave="hoverLine('l-6','g-blue',0)"
+    >
+      <div class="glass-box w-28 h-28 rounded-full flex flex-col items-center justify-center gap-1.5 animate-float tilt-box group" style="animation-delay:2s">
+        <div class="p-2.5 bg-blue-100/80 rounded-full group-hover:bg-blue-200/90 transition-colors">
+          <i data-lucide="notebook-text" class="w-6 h-6 text-blue-600"></i>
+        </div>
+        <span class="text-[11px] font-bold text-slate-700 text-center leading-tight">Diary<br>Entry</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Profile panel -->
+  <div class="profile-backdrop" id="profileBackdrop">
+    <aside class="profile-panel">
+      <button class="profile-close" id="profileClose">×</button>
+
+      <div class="profile-avatar">
+        <!-- UPDATED icon -->
+        <div class="avatar-circle">
+          <i data-lucide="cat" class="w-10 h-10 text-slate-800"></i>
+        </div>
+      </div>
+
+      <h2 class="profile-title" id="profileTitle">Your G&amp;G profile</h2>
+      <p class="profile-sub">
+        Profile is stored only in this browser.
+      </p>
+
+      <div class="profile-fields">
+        <div class="pf-field">
+          <label>First name</label>
+          <input id="pfFirst" type="text" value="Soft" autocomplete="given-name" />
+        </div>
+        <div class="pf-field">
+          <label>Last name</label>
+          <input id="pfLast" type="text" value="Cat" autocomplete="family-name" />
+        </div>
+        <div class="pf-field">
+          <label>Email</label>
+          <input id="pfEmail" type="email" value="softcat@example.com" autocomplete="email" />
+        </div>
+
+        <!-- NEW save button -->
+        <button id="profileSave"
+          class="mt-2 w-full rounded-full bg-slate-900 text-white py-2 text-sm font-semibold hover:bg-slate-800">
+          Save profile
+        </button>
+      </div>
+
+      <p class="profile-note" id="profileSavedHint" style="display:none;">
+        Saved ✅
+      </p>
+    </aside>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // ---------- PROFILE SAVE + SHOW (NEW) ----------
+    // localStorage stores key/value strings; objects should be JSON.stringify'd and read back with JSON.parse [web:346][web:347]
+    const PROFILE_KEY = "gg_profile_v1";
+
+    const profileChipName = document.getElementById("profileChipName");
+    const profileTitle = document.getElementById("profileTitle");
+    const pfFirst = document.getElementById("pfFirst");
+    const pfLast = document.getElementById("pfLast");
+    const pfEmail = document.getElementById("pfEmail");
+    const profileSave = document.getElementById("profileSave");
+    const profileSavedHint = document.getElementById("profileSavedHint");
+
+    function fullName(first, last) {
+      const f = (first || "").trim();
+      const l = (last || "").trim();
+      const name = (f + " " + l).trim();
+      return name || "Your profile";
+    }
+
+    function renderProfileUI(profile) {
+      const name = fullName(profile.first, profile.last);
+      profileChipName.textContent = name;
+      profileTitle.textContent = name;
+    }
+
+    function loadProfile() {
+      const raw = localStorage.getItem(PROFILE_KEY);
+      if (!raw) {
+        // default values already present in inputs
+        renderProfileUI({ first: pfFirst.value, last: pfLast.value });
+        return;
+      }
+      try {
+        const data = JSON.parse(raw);
+        if (typeof data.first === "string") pfFirst.value = data.first;
+        if (typeof data.last === "string") pfLast.value = data.last;
+        if (typeof data.email === "string") pfEmail.value = data.email;
+        renderProfileUI(data);
+      } catch (e) {
+        // if corrupted, ignore
+        renderProfileUI({ first: pfFirst.value, last: pfLast.value });
+      }
+    }
+
+    function saveProfile() {
+      const data = {
+        first: pfFirst.value.trim(),
+        last: pfLast.value.trim(),
+        email: pfEmail.value.trim()
+      };
+      localStorage.setItem(PROFILE_KEY, JSON.stringify(data));
+      renderProfileUI(data);
+
+      profileSavedHint.style.display = "block";
+      clearTimeout(window.__ggSavedTimer);
+      window.__ggSavedTimer = setTimeout(() => {
+        profileSavedHint.style.display = "none";
+      }, 1200);
+    }
+
+    // live update name on typing (even before save)
+    function liveUpdate() {
+      renderProfileUI({ first: pfFirst.value, last: pfLast.value, email: pfEmail.value });
+    }
+    pfFirst.addEventListener("input", liveUpdate);
+    pfLast.addEventListener("input", liveUpdate);
+
+    profileSave.addEventListener("click", saveProfile);
+
+    // ---------- ORIGINAL JS ----------
+    let busy = false;
+
+    function hoverLine(id,color,on){
+      if(busy) return;
+      const line = document.getElementById(id);
+      if(on){
+        line.classList.add('on',color);
+      }else{
+        line.classList.remove('on',color);
+      }
+    }
+
+    function glowAll(){
+      busy = true;
+      const rip = document.getElementById('cat-fx');
+      rip.classList.remove('pop');
+      void rip.offsetWidth;
+      rip.classList.add('pop');
+
+      const map = [
+        ['l-1','g-red'],['l-2','g-yellow'],['l-3','g-pink'],
+        ['l-4','g-green'],['l-5','g-purple'],['l-6','g-blue']
+      ];
+      map.forEach(item=>{
+        document.getElementById(item[0]).classList.add('on',item[1]);
+      });
+      setTimeout(()=>{
+        busy=false;
+        map.forEach(item=>{
+          document.getElementById(item[0]).classList.remove('on',item[1]);
+        });
+      },2000);
+    }
+
+    const nodes = document.querySelectorAll('.parallax-wrap');
+    const boxes = document.querySelectorAll('.tilt-box');
+
+    document.addEventListener('mousemove',(e)=>{
+      const x = (e.clientX - window.innerWidth/2)/50;
+      const y = (e.clientY - window.innerHeight/2)/50;
+      nodes.forEach(node=>{
+        const s = node.getAttribute('data-s');
+        node.style.transform =
+          `translate(calc(-50% + ${-x * s}px), calc(-50% + ${-y * s}px))`;
+      });
+    });
+
+    boxes.forEach(wrap=>{
+      const card = wrap.querySelector('.glass-box');
+      wrap.addEventListener('mousemove',(e)=>{
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rX = ((y - rect.height/2)/(rect.height/2))*-20;
+        const rY = ((x - rect.width/2)/(rect.width/2))*20;
+        card.style.transform =
+          `perspective(1000px) rotateX(${rX}deg) rotateY(${rY}deg) scale(1.1)`;
+      });
+      wrap.addEventListener('mouseleave',()=>{
+        card.style.transform =
+          `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
+      });
+    });
+
+    // connect every page
+    document.querySelectorAll('.parallax-wrap[data-link]').forEach(node=>{
+      node.addEventListener('click',()=>{
+        const url = node.getAttribute('data-link');
+        if(url){
+          window.location.href = url;
+        }
+      });
+    });
+
+    // profile panel open/close (center cat + header chip)
+    const profileBackdrop = document.getElementById('profileBackdrop');
+    const profileClose = document.getElementById('profileClose');
+    const profileChip = document.getElementById('profileChip');
+    const centerCat = document.getElementById('centerCat');
+
+    function openProfile(){
+      profileBackdrop.classList.add('show');
+    }
+
+    profileChip.addEventListener('click', openProfile);
+    centerCat.addEventListener('click', ()=>{
+      glowAll();
+      openProfile();
+    });
+
+    profileClose.addEventListener('click', () => {
+      profileBackdrop.classList.remove('show');
+    });
+
+    profileBackdrop.addEventListener('click', (e) => {
+      if (e.target === profileBackdrop) {
+        profileBackdrop.classList.remove('show');
+      }
+    });
+
+    // IMPORTANT: load saved profile on page load
+    loadProfile();
+  </script>
+</body>
+</html>
