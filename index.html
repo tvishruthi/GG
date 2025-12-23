@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <!-- G&G -->
-<!-- created by vishruthi -->
+
 <head>
   <meta charset="UTF-8">
   <title>G&G – Home</title>
@@ -69,7 +69,7 @@
       100%{transform:scale(3);opacity:0;}
     }
 
-    /* profile */
+    /* profile panel */
     .profile-backdrop{
       position:fixed;
       inset:0;
@@ -217,7 +217,11 @@
       </div>
     </div>
 
-      <!-- header -->
+    <nav class="hidden md:flex gap-4 items-center">
+      <!-- ABOUT LINK REMOVED -->
+      <a href="contact.html" class="px-5 py-2.5 rounded-full hover:bg-white/50 transition-colors text-sm font-semibold text-slate-700 tracking-wide">Contact</a>
+
+      <!-- header mini profile chip -->
       <button id="profileChip" class="ml-2 flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 hover:bg-white shadow-sm text-xs font-semibold text-slate-700">
         <span class="w-6 h-6 rounded-full bg-gradient-to-br from-pink-200 to-indigo-200 flex items-center justify-center">
           <i data-lucide="cat" class="w-4 h-4 text-slate-700"></i>
@@ -346,13 +350,12 @@
     </div>
   </main>
 
-  <!-- Profile panel -->
+  <!-- Profile -->
   <div class="profile-backdrop" id="profileBackdrop">
     <aside class="profile-panel">
       <button class="profile-close" id="profileClose">×</button>
 
       <div class="profile-avatar">
-        <!-- UPDATED icon -->
         <div class="avatar-circle">
           <i data-lucide="cat" class="w-10 h-10 text-slate-800"></i>
         </div>
@@ -377,7 +380,6 @@
           <input id="pfEmail" type="email" value="softcat@example.com" autocomplete="email" />
         </div>
 
-        <!-- NEW save button -->
         <button id="profileSave"
           class="mt-2 w-full rounded-full bg-slate-900 text-white py-2 text-sm font-semibold hover:bg-slate-800">
           Save profile
@@ -393,8 +395,7 @@
   <script>
     lucide.createIcons();
 
-    // ---------- PROFILE SAVE + SHOW (NEW) ----------
-    // localStorage stores key/value strings; objects should be JSON.stringify'd and read back with JSON.parse [web:346][web:347]
+    // profile save 
     const PROFILE_KEY = "gg_profile_v1";
 
     const profileChipName = document.getElementById("profileChipName");
@@ -421,7 +422,6 @@
     function loadProfile() {
       const raw = localStorage.getItem(PROFILE_KEY);
       if (!raw) {
-        // default values already present in inputs
         renderProfileUI({ first: pfFirst.value, last: pfLast.value });
         return;
       }
@@ -432,7 +432,6 @@
         if (typeof data.email === "string") pfEmail.value = data.email;
         renderProfileUI(data);
       } catch (e) {
-        // if corrupted, ignore
         renderProfileUI({ first: pfFirst.value, last: pfLast.value });
       }
     }
@@ -453,7 +452,6 @@
       }, 1200);
     }
 
-    // live update name on typing (even before save)
     function liveUpdate() {
       renderProfileUI({ first: pfFirst.value, last: pfLast.value, email: pfEmail.value });
     }
@@ -462,7 +460,7 @@
 
     profileSave.addEventListener("click", saveProfile);
 
-    // ---------- ORIGINAL JS ----------
+    // Js 
     let busy = false;
 
     function hoverLine(id,color,on){
@@ -527,7 +525,6 @@
       });
     });
 
-    // connect every page
     document.querySelectorAll('.parallax-wrap[data-link]').forEach(node=>{
       node.addEventListener('click',()=>{
         const url = node.getAttribute('data-link');
@@ -537,7 +534,6 @@
       });
     });
 
-    // profile panel open/close (center cat + header chip)
     const profileBackdrop = document.getElementById('profileBackdrop');
     const profileClose = document.getElementById('profileClose');
     const profileChip = document.getElementById('profileChip');
@@ -563,7 +559,6 @@
       }
     });
 
-    // IMPORTANT: load saved profile on page load
     loadProfile();
   </script>
 </body>
